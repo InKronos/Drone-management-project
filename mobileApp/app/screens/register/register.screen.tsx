@@ -7,11 +7,16 @@ import { theme } from "../../../App.style";
 import { HeaderComponent } from "../../components/header.components";
 import { registerStyle } from "./register.style";
 
-export const RegisterScreen = () => {
+interface RegisterScreenProps {
+    navigation: any;
+}
+
+
+export const RegisterScreen = (props: RegisterScreenProps) => {
     return (
         <SafeAreaView>
             <ScrollView>
-                <HeaderComponent title="Register"/>
+                <HeaderComponent title="Register" hasBackButton={true} navigation={props.navigation}/>
                 <View style={registerStyle.content}>
                     <TextInput label="Name" />
                     <TextInput label="Email" keyboardType="email-address"/>
