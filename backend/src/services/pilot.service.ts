@@ -23,13 +23,9 @@ export const createPilot = async(
 
 export const signTokens = async (pilot: Pilot) => {
 
-    const access_token = signJwt({ sub: pilot.id }, 'accessTokenPrivateKey', {
-      expiresIn: `${config.get<number>('accessTokenExpiresIn')}m`,
-    });
+    const access_token = signJwt({ sub: pilot.id });
   
-    const refresh_token = signJwt({ sub: pilot.id }, 'refreshTokenPrivateKey', {
-      expiresIn: `${config.get<number>('refreshTokenExpiresIn')}m`,
-    });
+    const refresh_token = signJwt({ sub: pilot.id });
   
     return { access_token, refresh_token };
   };

@@ -1,19 +1,12 @@
 import jwt, { SignOptions } from 'jsonwebtoken';
 import config from 'config';
+import dotenv from 'dotenv';
 
 export const signJwt = (
-  payload: Object,
-  keyName: 'accessTokenPrivateKey' | 'refreshTokenPrivateKey',
-  options: SignOptions
+  payload: Object
 ) => {
-  const privateKey = Buffer.from(
-    config.get<string>(keyName),
-    'base64'
-  ).toString('ascii');
-  return jwt.sign(payload, privateKey, {
-    ...(options && options),
-    algorithm: 'RS256',
-  });
+ //const privateKey = keyName === 'accessTokenPrivateKey' ? process.env.JWT_ACCESS_TOKEN_PRIVATE_KEY :  process.env.JWT_REFRESH_TOKEN_PRIVATE_KEY;
+  return jwt.sign(payload, 'Secret');
 };
 
 export const verifyJwt = <T>(
