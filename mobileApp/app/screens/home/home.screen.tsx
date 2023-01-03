@@ -3,10 +3,14 @@ import { Text } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { HeaderComponent } from "../../components/header.components";
 
-export const HomeScreen = () => {
+
+interface homeScreenProps {
+    navigation: any;
+}
+export const HomeScreen = (props: homeScreenProps) => {
     return(
         <SafeAreaView>
-            <HeaderComponent title="Drone Managment" hasBackButton={false}/>
+            <HeaderComponent title="Drone Managment" hasBackButton={false} navigation={props.navigation}/>
             <Text>Strona główna xd</Text>
         </SafeAreaView>
     )
