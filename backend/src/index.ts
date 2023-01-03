@@ -6,6 +6,7 @@ import { AppDataSource } from './utils/dataSource';
 import { registerPilot } from './routes/register';
 import { loginPilot } from './routes/login';
 import bodyParser from 'body-parser';
+import { logoutPilot } from './routes/logout';
 
 
 dotenv.config();
@@ -28,6 +29,7 @@ AppDataSource.initialize()
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(registerPilot);
     app.use(loginPilot);
+    app.use(logoutPilot);
 
     app.listen(port, () => {
       console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
