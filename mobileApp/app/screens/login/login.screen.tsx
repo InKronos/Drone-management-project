@@ -32,8 +32,10 @@ const LoginScreen = (props: LoginScreenProps) => {
         if (props.loginState.isLoggingIn){
             props.showLoading()
 
-            AuthService.login(userLogin.email, userLogin.password).then(() => {
-                
+            AuthService.login(userLogin.email, userLogin.password).then(res => {
+                console.log(res);
+                props.navigation.navigate("Home");
+                props.hideLoading();
             })
         }
     }, [props.loginState.isLoggingIn]);

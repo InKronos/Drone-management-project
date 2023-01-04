@@ -2,9 +2,9 @@ import { PilotData } from "../model/pilot/PilotData";
 import axios, {AxiosPromise, AxiosResponse} from 'axios';
 
 class AuthService{
-    login(email: string, password: string) : Promise<PilotData> {
+    login(email: string, password: string) {
         try{
-            return axios.post('http://localhost:8000/api/login',{
+            return axios.post('http://192.168.0.197:8000/api/login',{
                 email: email,
                 password: password
             });

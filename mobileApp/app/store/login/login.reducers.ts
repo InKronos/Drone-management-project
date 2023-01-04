@@ -5,7 +5,7 @@ import { LoginState } from "./LoginState";
 
 const initialState: LoginState = AppInitialState.login;
 
-export const loginRedicer = createReducer(initialState, builder => {
+export const loginReducer = createReducer(initialState, builder => {
     builder.addCase(login, currentState => {
         return {
             ...currentState,

@@ -8,6 +8,7 @@ const router = express.Router();
 
 router.post('/api/login', async (req, res, next) => {
     try{
+        console.log("I have it");
         const { email, password } = req.body;
         const pliot = await findPilotByEmail({email});
         if (!pliot || !(await Pilot.comparePasswords(password, pliot.password))) {
