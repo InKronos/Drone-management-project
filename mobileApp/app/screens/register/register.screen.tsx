@@ -4,7 +4,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { Appbar, Button, TextInput } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { theme } from "../../../App.style";
-import { HeaderComponent } from "../../components/header.components";
+import { HeaderComponent } from "../../components/header/header.component";
 import { registerStyle } from "./register.style";
 
 interface RegisterScreenProps {

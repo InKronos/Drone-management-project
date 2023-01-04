@@ -1,7 +1,7 @@
 import React from "react";
 import { Text } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { HeaderComponent } from "../../components/header.components";
+import { HeaderComponent } from "../../components/header/header.component";
 
 
 interface homeScreenProps {

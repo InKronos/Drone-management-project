@@ -1,18 +1,31 @@
+import { bindActionCreators } from "@reduxjs/toolkit";
 import { Formik } from "formik";
 import React from "react";
 import { Alert, SafeAreaView, View } from "react-native";
 import { Button, Card, Text, TextInput } from "react-native-paper";
+import { connect } from "react-redux";
+import { hide, show } from "../../store/loading/loading.actions";
+import { LoadingState } from "../../store/loading/LoadingState";
 import { loginForm } from "./login.form";
 import { loginStyle } from "./login.style";
 
 interface LoginScreenProps {
     navigation: any;
+    loadingState: LoadingState;
+    hideLoading: Function;
+    showLoading: Function;
 }
 
-export const LoginScreen = (props: LoginScreenProps) => {
+const LoginScreen = (props: LoginScreenProps) => {
 
     const login = () => props.navigation.navigate("Home");
     const register = () => props.navigation.navigate("Register");
+    const forgotPassword = () => {
+        props.showLoading();
+        setTimeout(() => {
+            props.hideLoading()
+        }, 3000)
+    }
 
     return (
         <SafeAreaView style={loginStyle.content}>
@@ -51,7 +64,11 @@ export const LoginScreen = (props: LoginScreenProps) => {
                                             </Text>
                                             : null
                                         }
-                                        <Button style={loginStyle.cardButton}>Forget password</Button>
+                                        <Button 
+                                            style={loginStyle.cardButton}
+                                            onPress={forgotPassword}>
+                                            Forget password
+                                        </Button>
                                         <Button 
                                             style={loginStyle.cardButton} 
                                             mode="contained"
@@ -72,3 +89,14 @@ export const LoginScreen = (props: LoginScreenProps) => {
         </SafeAreaView>
     )
 }
+
+const mapStateToProps = (store: {loading: LoadingState}) => ({
+    loadingState: store.loading
+})
+const mapDispatchToProps = (dispatch: any) => (
+    bindActionCreators({
+        hideLoading: hide,
+        showLoading: show
+    }, dispatch)
+)
+export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);
