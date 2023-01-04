@@ -12,7 +12,10 @@ router.post('/api/login', async (req, res, next) => {
         const { email, password } = req.body;
         const pliot = await findPilotByEmail({email});
         if (!pliot || !(await Pilot.comparePasswords(password, pliot.password))) {
-            return next(new AppError(400, 'Invalid email or password'));
+            return res.status(400).json({
+            status: 'fail',
+            message: 'Invalid Email or password',
+          });;
         }
         const { access_token, refresh_token } = await signTokens(pliot);
 

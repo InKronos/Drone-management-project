@@ -2,13 +2,13 @@ import { bindActionCreators } from "@reduxjs/toolkit";
 import { Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import { Alert, SafeAreaView, View } from "react-native";
-import { Button, Card, Text, TextInput } from "react-native-paper";
+import { Button, Card, Snackbar, Text, TextInput } from "react-native-paper";
 import { connect } from "react-redux";
 import AuthService from "../../services/AuthService";
 import { AppState } from "../../store/AppState";
 import { hide, show } from "../../store/loading/loading.actions";
 import { LoadingState } from "../../store/loading/LoadingState";
-import { login } from "../../store/login/login.actions";
+import { login, loginFail, loginSuccess } from "../../store/login/login.actions";
 import { LoginState } from "../../store/login/LoginState";
 import { loginForm } from "./login.form";
 import { loginStyle } from "./login.style";
@@ -22,6 +22,8 @@ interface LoginScreenProps {
     hideLoading: Function;
     showLoading: Function;
     login: Function;
+    loginSuccess: Function;
+    loginFail: Function;
 }
 
 const LoginScreen = (props: LoginScreenProps) => {
@@ -30,13 +32,20 @@ const LoginScreen = (props: LoginScreenProps) => {
     
     useEffect(() => {
         if (props.loginState.isLoggingIn){
-            props.showLoading()
+            props.showLoading();
 
             AuthService.login(userLogin.email, userLogin.password).then(res => {
                 console.log(res);
+                props.loginSuccess("something");
                 props.navigation.navigate("Home");
                 props.hideLoading();
             })
+            .catch(error => {
+                props.loginFail(error.response.data.message);
+            })
+        }
+        else{
+            props.hideLoading();
         }
     }, [props.loginState.isLoggingIn]);
 
@@ -111,6 +120,16 @@ const LoginScreen = (props: LoginScreenProps) => {
                     </Card.Content>
                 </Card>
             </View>
+            {
+                props.loginState.error ?
+                <Snackbar
+                    duration={5000}
+                    visible={true}
+                    onDismiss={() => {}}>
+                    {props.loginState.error}
+                </Snackbar>
+                : null
+            }
         </SafeAreaView>
     )
 }
@@ -122,6 +141,8 @@ const mapStateToProps = (store: AppState) => ({
 
 const mapDispatchToProps = (dispatch: any) => (
     bindActionCreators({
+        loginSuccess: loginSuccess,
+        loginFail: loginFail,
         login: login,
         hideLoading: hide,
         showLoading: show
