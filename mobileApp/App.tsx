@@ -14,9 +14,6 @@ import { Provider } from 'react-redux';
 import { theme } from './App.style'
 import AppNavigator from './app/app.navigator';
 import LoadingComponent from './app/components/loading/loading.component';
-import { HomeScreen } from './app/screens/home/home.screen';
-import LoginScreen from './app/screens/login/login.screen';
-import { RegisterScreen } from './app/screens/register/register.screen';
 import { store } from './app/store/store';
 
 
