@@ -1,10 +1,9 @@
 import { createReducer } from "@reduxjs/toolkit";
+import { AppInitialState } from "../AppInitialState";
 import { hide, show } from "./loading.actions";
 import { LoadingState } from "./LoadingState";
 
-const initialState: LoadingState = {
-    show: false
-}
+const initialState: LoadingState = AppInitialState.loading;
 
 export const loadingReducer = createReducer(initialState, builder => {
     builder.addCase(show, () => {

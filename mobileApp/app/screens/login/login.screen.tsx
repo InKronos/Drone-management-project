@@ -1,24 +1,47 @@
 import { bindActionCreators } from "@reduxjs/toolkit";
 import { Formik } from "formik";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, SafeAreaView, View } from "react-native";
 import { Button, Card, Text, TextInput } from "react-native-paper";
 import { connect } from "react-redux";
+import AuthService from "../../services/AuthService";
+import { AppState } from "../../store/AppState";
 import { hide, show } from "../../store/loading/loading.actions";
 import { LoadingState } from "../../store/loading/LoadingState";
+import { login } from "../../store/login/login.actions";
+import { LoginState } from "../../store/login/LoginState";
 import { loginForm } from "./login.form";
 import { loginStyle } from "./login.style";
 
 interface LoginScreenProps {
     navigation: any;
+
     loadingState: LoadingState;
+    loginState: LoginState;
+
     hideLoading: Function;
     showLoading: Function;
+    login: Function;
 }
 
 const LoginScreen = (props: LoginScreenProps) => {
 
-    const login = () => props.navigation.navigate("Home");
+    const [userLogin, setUserLogin] = useState({email: "", password: ""});
+    
+    useEffect(() => {
+        if (props.loginState.isLoggingIn){
+            props.showLoading()
+
+            AuthService.login(userLogin.email, userLogin.password).then(() => {
+                
+            })
+        }
+    }, [props.loginState.isLoggingIn]);
+
+    const login = (userLogin: {email: string, password: string}) => {
+        setUserLogin(userLogin);
+        props.login();
+    }
     const register = () => props.navigation.navigate("Register");
     const forgotPassword = () => {
         props.showLoading();
@@ -90,11 +113,14 @@ const LoginScreen = (props: LoginScreenProps) => {
     )
 }
 
-const mapStateToProps = (store: {loading: LoadingState}) => ({
-    loadingState: store.loading
+const mapStateToProps = (store: AppState) => ({
+    loadingState: store.loading,
+    loginState: store.login
 })
+
 const mapDispatchToProps = (dispatch: any) => (
     bindActionCreators({
+        login: login,
         hideLoading: hide,
         showLoading: show
     }, dispatch)

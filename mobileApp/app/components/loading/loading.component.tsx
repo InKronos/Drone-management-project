@@ -2,6 +2,7 @@ import React from "react";
 import { View } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 import { connect } from "react-redux";
+import { AppState } from "../../store/AppState";
 import { LoadingState } from "../../store/loading/LoadingState";
 import { loadingComponentStyle } from "./loading.component.style";
 
@@ -19,7 +20,7 @@ const LoadingComponent = (props: LoadingComponentProps) => {
     );
 }
 
-const mapStateToProps = (store: {loading: LoadingState}) : LoadingComponentProps => ({
+const mapStateToProps = (store: AppState) : LoadingComponentProps => ({
     loadingState: store.loading
 })
 

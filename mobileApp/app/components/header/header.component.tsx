@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Appbar, Menu } from "react-native-paper";
-import { theme } from "../../App.style";
+import { theme } from "../../../App.style";
 import { headerStyle } from "./header.style";
 
 export const HeaderComponent = (props: HeaderComponentParams) => {
