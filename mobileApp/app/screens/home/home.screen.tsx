@@ -1,7 +1,9 @@
 import React from "react";
-import { Text } from "react-native-paper";
+import { View } from "react-native";
+import { Button, Card, Text } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { HeaderComponent } from "../../components/header/header.component";
+import { homeStyle } from "./home.style";
 
 
 interface homeScreenProps {
@@ -11,7 +13,24 @@ export const HomeScreen = (props: homeScreenProps) => {
     return(
         <SafeAreaView>
             <HeaderComponent title="Drone Managment" hasBackButton={false} navigation={props.navigation}/>
-            <Text>Strona główna xd</Text>
+            <View style={homeStyle.content}>
+                <Card>
+                    <Card.Title title="Drones"/>
+                    <Card.Content>
+                        <Text style={homeStyle.textContainer}>no connected drones</Text>
+                        <Button icon="plus" mode="outlined">
+                            Add drone
+                        </Button>
+                    </Card.Content>
+                </Card>
+                <Card style={homeStyle.card}>
+                    <Card.Title title="Missions"/>
+                    <Card.Content>
+                        <Text style={homeStyle.textContainer}>no missions</Text>
+                    
+                    </Card.Content>
+                </Card>
+            </View>
         </SafeAreaView>
     )
 }

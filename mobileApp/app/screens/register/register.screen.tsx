@@ -33,6 +33,11 @@ interface RegisterScreenProps {
 const RegisterScreen = (props: RegisterScreenProps) => {
 
     const [userRegister, setUserRegister] = useState({name: "", email: "", password: "", phone_number: ""});
+    const [secureTextEntryPassword, setSecureTextEntryPassword] = useState(true);
+    const [secureTextEntryPasswordConfirm, setSecureTextEntryPasswordConfirm] = useState(true);
+
+    const [eyePassword, setEyePassword] = useState("eye-off-outline");
+    const [eyePasswordConfirm, setEyePasswordConfirm] = useState("eye-off-outline");
 
     useEffect(() => {
         if (props.registerState.isRegistering){
@@ -94,8 +99,15 @@ const RegisterScreen = (props: RegisterScreenProps) => {
                             }
                             <TextInput 
                                 label="Password" 
-                                secureTextEntry={true} 
-                                right={<TextInput.Icon icon="eye-off-outline"/>} 
+                                secureTextEntry={secureTextEntryPassword} 
+                                right={
+                                    <TextInput.Icon 
+                                        icon={eyePassword}
+                                        onPress={() => {
+                                            setSecureTextEntryPassword(!secureTextEntryPassword);
+                                            eyePassword === "eye-off-outline" ? setEyePassword("eye") : setEyePassword("eye-off-outline");
+                                            return false;
+                                        }}/>} 
                                 onChangeText={handleChange('password')}
                                 onFocus={() => setFieldTouched('password')}/>
                             {
@@ -107,8 +119,15 @@ const RegisterScreen = (props: RegisterScreenProps) => {
                             }
                             <TextInput 
                                 label="Confirm password" 
-                                secureTextEntry={true} 
-                                right={<TextInput.Icon icon="eye-off-outline"/>}
+                                secureTextEntry={secureTextEntryPasswordConfirm} 
+                                right={
+                                    <TextInput.Icon 
+                                        icon={eyePasswordConfirm}
+                                        onPress={() => {
+                                            setSecureTextEntryPasswordConfirm(!secureTextEntryPasswordConfirm);
+                                            eyePasswordConfirm === "eye-off-outline" ? setEyePasswordConfirm("eye") : setEyePasswordConfirm("eye-off-outline");
+                                            return false;
+                                        }}/>} 
                                 onChangeText={handleChange('confirm_password')}
                                 onFocus={() => setFieldTouched('confirm_password')}/>
                             {
