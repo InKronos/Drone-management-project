@@ -3,7 +3,10 @@ import {
 	Column,
     BaseEntity,
     PrimaryGeneratedColumn,
+	JoinTable,
+	ManyToMany,
 } from 'typeorm';
+import { Drone } from './drone.entity';
 
 @Entity('pilot')
 export class Pilot extends BaseEntity {
@@ -23,6 +26,10 @@ export class Pilot extends BaseEntity {
 
 	@Column()
 	phone_number: string;
+
+	@ManyToMany(() => Drone)
+	@JoinTable()
+	drone: Drone[];
 
     static async comparePasswords(
 		candidatePassword: string,
