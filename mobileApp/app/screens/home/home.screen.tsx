@@ -9,7 +9,10 @@ import { homeStyle } from "./home.style";
 interface homeScreenProps {
     navigation: any;
 }
-export const HomeScreen = (props: homeScreenProps) => {
+const HomeScreen = (props: homeScreenProps) => {
+
+    const goToAddDrone = () => props.navigation.navigate("addDrone")
+
     return(
         <SafeAreaView>
             <HeaderComponent title="Drone Managment" hasBackButton={false} navigation={props.navigation}/>
@@ -18,7 +21,9 @@ export const HomeScreen = (props: homeScreenProps) => {
                     <Card.Title title="Drones"/>
                     <Card.Content>
                         <Text style={homeStyle.textContainer}>no connected drones</Text>
-                        <Button icon="plus" mode="outlined">
+                        <Button 
+                            icon="plus" 
+                            mode="outlined">
                             Add drone
                         </Button>
                     </Card.Content>
@@ -34,3 +39,5 @@ export const HomeScreen = (props: homeScreenProps) => {
         </SafeAreaView>
     )
 }
+
+export default HomeScreen;

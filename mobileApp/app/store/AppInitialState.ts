@@ -14,5 +14,11 @@ export const AppInitialState: AppState = {
         error: null,
         isCreated: false,
         isRegistering: false
+    },
+    drone: {
+        error: null,
+        droneLoading: false,
+        droneGetSuccess: false,
+        droneGetFail: false
     }
 }
