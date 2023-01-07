@@ -10,7 +10,8 @@ export const addDroneStyle = StyleSheet.create({
         textAlign: "center",
         paddingBottom: "10%"
     },
-    card: {
-        marginTop: 20
+    button: {
+        marginLeft: "20%",
+        marginRight: "20%"
     }
 })

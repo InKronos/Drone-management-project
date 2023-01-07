@@ -1,7 +1,7 @@
 import { bindActionCreators } from "@reduxjs/toolkit";
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
-import { List, Snackbar } from "react-native-paper";
+import { Button, Card, List, Snackbar, Text } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { connect } from "react-redux";
 import { Drone } from "../../model/drone/Drone";
@@ -12,6 +12,7 @@ import { getingDrones, showDronesFail, showDronesSuccess } from "../../store/dro
 import { DroneState } from "../../store/drone/DroneState";
 import { hide, show } from "../../store/loading/loading.actions";
 import { LoadingState } from "../../store/loading/LoadingState";
+import { addDroneStyle } from "./addDrone.style";
 
 interface addDroneScreenProps {
     navigation: any;
@@ -32,26 +33,36 @@ const AddDroneScreen = (props: addDroneScreenProps) => {
 
     const [dronesArray, setDronesArray] = useState<Drone[]>([]);
 
+    const connectToServer = () => props.getingDrones();
+
+    useEffect(() => {props.getingDrones()}, []);
+
     useEffect(() => {
-        props.showLoading();
-        props.getingDrones();
-        DroneService.getDrones("positive").then(drones => {
-            setDronesArray(drones);
-            props.showDronesSuccess();
+        if(props.droneState.droneLoading){
+            props.showLoading();
+            DroneService.getDrones("positive").then(drones => {
+                setDronesArray(drones);
+                props.showDronesSuccess();
+                props.hideLoading();
+            }).catch(error => {
+                props.showDronesFail(error);
+                props.hideLoading();
+            })
+        }
+        else{
             props.hideLoading();
-        }).catch(error => {
-            props.showDronesFail(error);
-        })
-    }, []);
+        }
+    }, [props.droneState.droneLoading]);
 
 
     return (
         <SafeAreaView>
             <HeaderComponent title="Connect Drone" hasBackButton={true} navigation={props.navigation}/>
-            <View>
+            <View >
                 { props.droneState.droneGetSuccess && dronesArray.map(drone =>
                      
                      <List.Item
+                     key={drone.name}
                      title={drone.name}
                      description="Online"
                      left={props => <List.Icon {...props} icon="drone" />}
@@ -59,13 +70,15 @@ const AddDroneScreen = (props: addDroneScreenProps) => {
                      />
                         
                 )}
-                { props.droneState.error ? 
-                <Snackbar
-                    duration={5000}
-                    visible={true}
-                    onDismiss={() => {}}>
-                    {props.droneState.error}
-                </Snackbar>
+                { (props.droneState.error || dronesArray.length === 0) ? 
+                <View style={addDroneStyle.content}>
+                    <Text style={addDroneStyle.textContainer}>No drones found or connection error</Text>
+                    <Button
+                        style={addDroneStyle.button}
+                        mode="outlined"
+                        onPress={connectToServer}>
+                        Reconnect</Button>
+                </View>
             : null }
             </View>
         </SafeAreaView>

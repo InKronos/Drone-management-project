@@ -11,7 +11,7 @@ interface homeScreenProps {
 }
 const HomeScreen = (props: homeScreenProps) => {
 
-    const goToAddDrone = () => props.navigation.navigate("addDrone")
+    const goToAddDrone = () => props.navigation.navigate("addDrone");
 
     return(
         <SafeAreaView>
@@ -22,6 +22,7 @@ const HomeScreen = (props: homeScreenProps) => {
                     <Card.Content>
                         <Text style={homeStyle.textContainer}>no connected drones</Text>
                         <Button 
+                            onPress={goToAddDrone}
                             icon="plus" 
                             mode="outlined">
                             Add drone

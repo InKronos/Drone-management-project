@@ -12,7 +12,7 @@ const { Navigator, Screen } = createNativeStackNavigator();
 const AppNavigator = () => (
     <NavigationContainer>
         <Navigator
-         initialRouteName="addDrone" 
+         initialRouteName="Home" 
          screenOptions={{
             headerShown: false
           }}>
