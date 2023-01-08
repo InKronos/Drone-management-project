@@ -33,6 +33,8 @@ interface homeScreenProps {
 const HomeScreen = (props: homeScreenProps) => {
 
     const goToAddDrone = () => props.navigation.navigate("addDrone");
+    const goToShowDrones = () => props.navigation.navigate("showDrones");
+
 
     const [mostUsedDrone, setMostUsedDrone] = useState<Drone>();
     const [isDrone, setIsDrone] = useState<boolean>(false);
@@ -73,7 +75,7 @@ const HomeScreen = (props: homeScreenProps) => {
                         <Text>Completed missions: 300</Text>
                         <Button 
                             style={homeStyle.cardButton}
-                            onPress={goToAddDrone} 
+                            onPress={goToShowDrones} 
                             mode="outlined">
                             Show all drones
                         </Button>
