@@ -1,17 +1,65 @@
-import React from "react";
+import { bindActionCreators } from "@reduxjs/toolkit";
+import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { Button, Card, Text } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { connect } from "react-redux";
 import { HeaderComponent } from "../../components/header/header.component";
+import { Drone } from "../../model/drone/Drone";
+import DroneService from "../../services/DroneService";
+import { AppState } from "../../store/AppState";
+import { getingDrones, showDronesFail, showDronesSuccess } from "../../store/drone/drone.actions";
+import { DroneState } from "../../store/drone/DroneState";
+import { hide, show } from "../../store/loading/loading.actions";
+import { LoadingState } from "../../store/loading/LoadingState";
 import { homeStyle } from "./home.style";
 
 
 interface homeScreenProps {
     navigation: any;
+
+
+    loadingState: LoadingState;
+    droneState: DroneState;
+
+
+    getingDrones: Function;
+    showDronesSuccess: Function;
+    showDronesFail: Function;
+
+    hideLoading: Function;
+    showLoading: Function;
 }
 const HomeScreen = (props: homeScreenProps) => {
 
     const goToAddDrone = () => props.navigation.navigate("addDrone");
+
+    const [mostUsedDrone, setMostUsedDrone] = useState<Drone>();
+    const [isDrone, setIsDrone] = useState<boolean>(false);
+
+    useEffect(() => {props.getingDrones()}, []);
+
+    useEffect(() => {
+        if(props.droneState.droneLoading){
+            props.showLoading();
+            DroneService.getMostUsedDrone("positive").then(drone => {
+                if(drone !== null){
+                    setIsDrone(true);
+                    setMostUsedDrone(drone);
+                }
+                else
+                    setIsDrone(true);
+                props.showDronesSuccess();
+                props.hideLoading();
+            }).catch(error => {
+                props.showDronesFail(error);
+                props.hideLoading();
+            })
+        }
+        else{
+            props.hideLoading();
+        }
+    }, [props.droneState.droneLoading]);
 
     return(
         <SafeAreaView>
@@ -19,15 +67,31 @@ const HomeScreen = (props: homeScreenProps) => {
             <View style={homeStyle.content}>
                 <Card>
                     <Card.Title title="Drones"/>
-                    <Card.Content>
-                        <Text style={homeStyle.textContainer}>no connected drones</Text>
+                    { props.droneState.droneGetSuccess ? 
+                        <Card.Content>
+                        <Text>Most used drone: {mostUsedDrone?.name}</Text>
+                        <Text>Completed missions: 300</Text>
                         <Button 
-                            onPress={goToAddDrone}
-                            icon="plus" 
+                            style={homeStyle.cardButton}
+                            onPress={goToAddDrone} 
                             mode="outlined">
-                            Add drone
+                            Show all drones
                         </Button>
                     </Card.Content>
+                    : null }
+                    { !props.droneState.droneLoading && !isDrone ? 
+                        <Card.Content>
+                            <Text style={homeStyle.textContainer}>no connected drones</Text>
+                            <Button 
+                                
+                                onPress={goToAddDrone}
+                                icon="plus" 
+                                mode="outlined">
+                                Add drone
+                            </Button>
+                        </Card.Content>
+                    : null }
+                    
                 </Card>
                 <Card style={homeStyle.card}>
                     <Card.Title title="Missions"/>
@@ -41,4 +105,20 @@ const HomeScreen = (props: homeScreenProps) => {
     )
 }
 
-export default HomeScreen;
+const mapStateToProps = (store: AppState) => ({
+    loadingState: store.loading,
+    droneState: store.drone
+})
+
+const mapDispatchToProps = (dispatch: any) => (
+    bindActionCreators({
+        getingDrones: getingDrones,
+        showDronesSuccess: showDronesSuccess,
+        showDronesFail: showDronesFail,
+        hideLoading: hide,
+        showLoading: show
+    }, dispatch)
+)
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

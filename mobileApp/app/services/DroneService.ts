@@ -21,6 +21,22 @@ class DroneService {
             }, 3000)
         })
     }
+
+    getMostUsedDrone(result: string){
+        return new Promise<Drone | null>((resolve, reject) => {
+            setTimeout(() => {
+                if(result === "positive"){
+                    const drone: Drone = { name: "DJI 300" };
+   
+                    resolve(drone);
+                }
+                else{
+                    reject({message: "Connection problems"})
+                }
+
+            }, 3000)
+        })
+    }
 }
 
 export default new DroneService;

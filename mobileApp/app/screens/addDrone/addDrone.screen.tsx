@@ -70,7 +70,7 @@ const AddDroneScreen = (props: addDroneScreenProps) => {
                      />
                         
                 )}
-                { (props.droneState.error || dronesArray.length === 0) ? 
+                { (props.droneState.error || dronesArray.length === 0) && !props.droneState.droneLoading ? 
                 <View style={addDroneStyle.content}>
                     <Text style={addDroneStyle.textContainer}>No drones found or connection error</Text>
                     <Button

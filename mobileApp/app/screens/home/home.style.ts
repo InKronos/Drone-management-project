@@ -12,5 +12,11 @@ export const homeStyle = StyleSheet.create({
     },
     card: {
         marginTop: 20
+    },
+    cardButton: {
+        marginTop: 20,
+        marginRight: "20%",
+        marginLeft: "20%",
+        marginBottom: 2
     }
 })
