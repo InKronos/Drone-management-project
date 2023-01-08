@@ -6,6 +6,7 @@ import HomeScreen from './screens/home/home.screen';
 import RegisterScreen from "./screens/register/register.screen";
 import AddDroneScreen from "./screens/addDrone/addDrone.screen";
 import showDronesScreen from "./screens/showDrones/showDrones.screen";
+import droneScreen from "./screens/Drone/drone.screen";
 
 
 const { Navigator, Screen } = createNativeStackNavigator();
@@ -22,6 +23,7 @@ const AppNavigator = () => (
             <Screen name="Home" component={HomeScreen}></Screen>
             <Screen name="addDrone" component={AddDroneScreen}></Screen>
             <Screen name="showDrones" component={showDronesScreen}></Screen>
+            <Screen name="Drone" component={droneScreen}></Screen>
         </Navigator>
     </NavigationContainer>
 )

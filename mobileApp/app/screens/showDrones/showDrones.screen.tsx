@@ -13,8 +13,12 @@ import { DroneState } from "../../store/drone/DroneState";
 import { hide, show } from "../../store/loading/loading.actions";
 import { LoadingState } from "../../store/loading/LoadingState";
 import { showDronesStyle } from "./showDrones.style";
+import { useNavigation } from "@react-navigation/native";
 
 interface showDronesScreenProps {
+
+
+
     navigation: any;
 
     loadingState: LoadingState;
@@ -34,6 +38,10 @@ interface showDronesScreenProps {
 
 const ShowDronesScreen = (props: showDronesScreenProps) => {
 
+    const navigation = useNavigation();
+    const [droneId, setDroneId] = useState<number>();
+    const goToDroneScreen = (id: number) => props.navigation.navigate("Drone", { id: id});
+    
     const [dronesArray, setDronesArray] = useState<Drone[]>([]);
 
     const [refreshing, setRefreshing] = React.useState(false);
@@ -44,7 +52,7 @@ const ShowDronesScreen = (props: showDronesScreenProps) => {
 
 
     useEffect(() => {
-        //props.showLoading();
+        props.showLoading();
         props.getingDrones();
     }, []);
 
@@ -53,20 +61,21 @@ const ShowDronesScreen = (props: showDronesScreenProps) => {
             DroneService.getUserDrones("positive").then(drones => {
                 setDronesArray(drones);
                 props.showDronesSuccess();
-                //.hideLoading();
+                props.hideLoading();
                 setRefreshing(false);
             }).catch(error => {
                 props.showDronesFail(error);
-                //props.hideLoading();
+                props.hideLoading();
                 setRefreshing(false);
             })
         }
         else{
-            //props.hideLoading();
+            props.hideLoading();
             setRefreshing(false);
         }
     }, [props.droneState.droneLoading, refreshing]);
 
+   
 
     return (
         <SafeAreaView>
@@ -82,10 +91,14 @@ const ShowDronesScreen = (props: showDronesScreenProps) => {
                      <List.Item
                      key={drone.name}
                      title={drone.name}
+                     onPress={() => goToDroneScreen(drone.id)}
                      description={
                         <>{drone.isOnline ? <Text style={showDronesStyle.online}>Online</Text> : <Text style={showDronesStyle.offline}>Offline</Text>}</>
                     }
-                     left={props => <List.Icon {...props} icon="drone" />}
+                     left={props => <List.Icon 
+                        {...props} 
+                        icon="drone" 
+                    />}
                      right={props => <List.Icon {...props} icon="eye" />}
                      />
                         
