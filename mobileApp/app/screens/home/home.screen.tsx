@@ -7,11 +7,13 @@ import { connect } from "react-redux";
 import { HeaderComponent } from "../../components/header/header.component";
 import { Drone } from "../../model/drone/Drone";
 import DroneService from "../../services/DroneService";
+import MissionService from "../../services/MissionService";
 import { AppState } from "../../store/AppState";
 import { getingDrones, showDronesFail, showDronesSuccess } from "../../store/drone/drone.actions";
 import { DroneState } from "../../store/drone/DroneState";
 import { hide, show } from "../../store/loading/loading.actions";
 import { LoadingState } from "../../store/loading/LoadingState";
+import { missionLoading, showMisssionFail, showMisssionSuccess } from "../../store/mission/mission.action";
 import { homeStyle } from "./home.style";
 
 
@@ -37,6 +39,7 @@ const HomeScreen = (props: homeScreenProps) => {
 
 
     const [mostUsedDrone, setMostUsedDrone] = useState<Drone>();
+    const [isMisson, setIsMission] = useState<boolean>(false);
     const [isDrone, setIsDrone] = useState<boolean>(false);
 
     useEffect(() => {props.getingDrones()}, []);
@@ -56,7 +59,14 @@ const HomeScreen = (props: homeScreenProps) => {
             }).catch(error => {
                 props.showDronesFail(error);
                 props.hideLoading();
-            })
+            });
+
+            MissionService.getMission().then(isMisson => {
+                setIsMission(isMisson);
+            }).catch(error => {
+                props.showDronesFail(error);
+                props.hideLoading();
+            });
         }
         else{
             props.hideLoading();
@@ -98,7 +108,15 @@ const HomeScreen = (props: homeScreenProps) => {
                 <Card style={homeStyle.card}>
                     <Card.Title title="Missions"/>
                     <Card.Content>
-                        <Text style={homeStyle.textContainer}>no missions</Text>
+                        { isMisson ? 
+                            <Button
+                            mode="outlined">
+                            Show Missions
+                            </Button>
+                        :
+                            <Text style={homeStyle.textContainer}>no missions</Text>
+
+                        }
                     
                     </Card.Content>
                 </Card>
@@ -109,7 +127,8 @@ const HomeScreen = (props: homeScreenProps) => {
 
 const mapStateToProps = (store: AppState) => ({
     loadingState: store.loading,
-    droneState: store.drone
+    droneState: store.drone,
+    missionState: store.mission
 })
 
 const mapDispatchToProps = (dispatch: any) => (
@@ -117,6 +136,9 @@ const mapDispatchToProps = (dispatch: any) => (
         getingDrones: getingDrones,
         showDronesSuccess: showDronesSuccess,
         showDronesFail: showDronesFail,
+        missionLoading: missionLoading,
+        showMissionSuccess: showMisssionSuccess,
+        showMissionFail: showMisssionFail,
         hideLoading: hide,
         showLoading: show
     }, dispatch)

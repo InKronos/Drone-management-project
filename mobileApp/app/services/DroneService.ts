@@ -1,7 +1,5 @@
 import React from "react";
 import { Drone } from "../model/drone/Drone";
-import { getingDrones } from "../store/drone/drone.actions";
-
 
 class DroneService {
     getDrones(result: string){

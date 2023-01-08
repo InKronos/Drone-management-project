@@ -20,5 +20,11 @@ export const AppInitialState: AppState = {
         droneLoading: false,
         droneGetSuccess: false,
         droneGetFail: false
+    },
+    mission: {
+        error: null,
+        missionLoading: false,
+        missionGetSuccess: false,
+        missionGetFail: false,
     }
 }
