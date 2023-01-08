@@ -3,8 +3,7 @@ import { theme } from "../../../App.style";
 
 export const showDronesStyle = StyleSheet.create({
     content: {
-        justifyContent: 'center',
-        padding: 20
+        flex: 1
     },
     textContainer: {
         display: "flex",
@@ -20,5 +19,15 @@ export const showDronesStyle = StyleSheet.create({
     },
     online: {
         color: theme.colors.success
+    },
+    fab: {
+    
+        position: "absolute",
+        margin: 5,
+        right: 0,
+        bottom: 0,
+        borderRadius: 100,
+        backgroundColor: theme.colors.primary,
+        color: "white"
     }
 })

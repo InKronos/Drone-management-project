@@ -1,7 +1,7 @@
 import { bindActionCreators } from "@reduxjs/toolkit";
 import React, { useEffect, useState } from "react";
 import { RefreshControl, ScrollView, View } from "react-native";
-import { Button, Card, List, Snackbar, Text } from "react-native-paper";
+import { Button, Card, FAB, List, Snackbar, Text } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { connect } from "react-redux";
 import { Drone } from "../../model/drone/Drone";
@@ -41,6 +41,7 @@ const ShowDronesScreen = (props: showDronesScreenProps) => {
     const navigation = useNavigation();
     const [droneId, setDroneId] = useState<number>();
     const goToDroneScreen = (id: number) => props.navigation.navigate("Drone", { id: id});
+    const goToAddDroneScreen = () => props.navigation.navigate("addDrone");
     
     const [dronesArray, setDronesArray] = useState<Drone[]>([]);
 
@@ -78,9 +79,10 @@ const ShowDronesScreen = (props: showDronesScreenProps) => {
    
 
     return (
-        <SafeAreaView>
+        <SafeAreaView style={showDronesStyle.content}>
             <HeaderComponent title="Your Drones" hasBackButton={true} navigation={props.navigation}/>
             <ScrollView 
+                
                 refreshControl={
                     <RefreshControl
                         refreshing={refreshing}
@@ -113,7 +115,14 @@ const ShowDronesScreen = (props: showDronesScreenProps) => {
                         Reconnect</Button>
                 </View>
             : null }
+            
             </ScrollView>
+            <FAB
+                onPress={goToAddDroneScreen}
+                icon="plus"
+                style={showDronesStyle.fab}
+                color={"white"}
+            /> 
         </SafeAreaView>
     )
 }
