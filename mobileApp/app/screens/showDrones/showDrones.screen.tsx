@@ -13,7 +13,6 @@ import { DroneState } from "../../store/drone/DroneState";
 import { hide, show } from "../../store/loading/loading.actions";
 import { LoadingState } from "../../store/loading/LoadingState";
 import { showDronesStyle } from "./showDrones.style";
-import { useNavigation } from "@react-navigation/native";
 
 interface showDronesScreenProps {
 
@@ -38,8 +37,6 @@ interface showDronesScreenProps {
 
 const ShowDronesScreen = (props: showDronesScreenProps) => {
 
-    const navigation = useNavigation();
-    const [droneId, setDroneId] = useState<number>();
     const goToDroneScreen = (id: number) => props.navigation.navigate("Drone", { id: id});
     const goToAddDroneScreen = () => props.navigation.navigate("addDrone");
     

@@ -36,6 +36,8 @@ const HomeScreen = (props: homeScreenProps) => {
 
     const goToAddDrone = () => props.navigation.navigate("addDrone");
     const goToShowDrones = () => props.navigation.navigate("showDrones");
+    const goToShowMissions = () => props.navigation.navigate("ShowMissions");
+
 
 
     const [mostUsedDrone, setMostUsedDrone] = useState<Drone>();
@@ -110,6 +112,7 @@ const HomeScreen = (props: homeScreenProps) => {
                     <Card.Content>
                         { isMisson ? 
                             <Button
+                            onPress={goToShowMissions}
                             mode="outlined">
                             Show Missions
                             </Button>

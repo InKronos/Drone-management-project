@@ -10,7 +10,7 @@ export const missionReducer = createReducer(initialState, builder => {
         return {
             ...currentState,
             error: null,
-            missionLoading: false,
+            missionLoading: true,
             missionGetSuccess: false,
             missionGetFail: false,
         }
@@ -19,7 +19,7 @@ export const missionReducer = createReducer(initialState, builder => {
         return {
             ...currentState,
             missionLoading: false,
-            missionGetSuccess: false,
+            missionGetSuccess: true,
             missionGetFail: false,
         }
     }),
@@ -28,7 +28,7 @@ export const missionReducer = createReducer(initialState, builder => {
             ...currentState,
             missionLoading: false,
             missionGetSuccess: false,
-            missionGetFail: false,
+            missionGetFail: true,
             error: action.payload
         }
     })
