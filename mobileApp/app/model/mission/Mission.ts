@@ -3,7 +3,8 @@ import { MissionPath } from "./MissionPath";
 
 export interface Mission {
     id: number;
-    date: Date;
+    missionStart: Date;
+    missionEnd?: Date;
     drone?: Drone;
     missionPath?: MissionPath[];
 }
