@@ -19,5 +19,10 @@ export const missionStyle = StyleSheet.create({
     missionDetails: {
         height: 500,
         position: "absolute",
+    },
+
+    markerImage: {
+        width: 45,
+        height: 45
     }
 });

@@ -1,6 +1,6 @@
 import { bindActionCreators } from "@reduxjs/toolkit";
 import React, { useEffect, useState } from "react";
-import { RefreshControl, ScrollView, View } from "react-native";
+import { Image, RefreshControl, ScrollView, View } from "react-native";
 import { Button, Card, FAB, List, Snackbar, Text } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { connect } from "react-redux";
@@ -61,6 +61,25 @@ const MissionScreen = (props: MissionScreenProps) => {
         props.missionLoading();
     }, []);
 
+    const [inMission, setInMission] = useState(1);
+
+    useEffect(() => {
+        if(inMission !== 1){
+            if(mission?.missionEnd === undefined){
+                setTimeout(() => {
+                    MissionService.getMissionData(props.route.params.id, inMission).then(mission => {
+                        setMission(mission);
+                        setInMission(inMission + 1);
+                    }).catch(error => {
+                        console.log(error);
+                    })
+                }, 3000)
+               
+            }
+        }
+
+    }, [inMission]);
+
     useEffect(() => {
         props.showLoading();
         if(props.missionState.missionLoading){
@@ -81,6 +100,7 @@ const MissionScreen = (props: MissionScreenProps) => {
                 props.showMissionSuccess();
                 props.hideLoading();
                 setRefreshing(false);
+                setInMission(2);
             }).catch(error => {
                 props.showMissionSuccess(error);
                 props.hideLoading();
@@ -115,9 +135,23 @@ const MissionScreen = (props: MissionScreenProps) => {
                     <Marker
                         description="Start"
                         coordinate={mission.missionPath[0]}/>
-                    <Marker
-                        description="End"
+                    { mission?.missionEnd !== undefined ? 
+                        <Marker
+                        description="drone"
                         coordinate={mission.missionPath[mission.missionPath.length - 1]}/>
+                    :
+                        <Marker
+                        anchor={{x: 0.5, y: 0.5}}
+                        description="End"
+                        coordinate={mission.missionPath[mission.missionPath.length - 1]}
+                        >
+                            <Image
+                            style={missionStyle.markerImage}
+                            source={require("../../../assets/drone.png")}
+                            />
+                        </Marker>
+                    }
+                   
                 </MapView>
                 : null
             }
@@ -131,7 +165,7 @@ const MissionScreen = (props: MissionScreenProps) => {
                     {
                         mission.missionEnd !== undefined ? 
                         <Text>Mission duration: { (mission?.missionEnd.getTime() - mission.missionStart.getTime() ) /60000 } min</Text> 
-                        : null
+                        : <Text>Mission duration: in place</Text> 
                     }
                     
                 </Card.Content>
