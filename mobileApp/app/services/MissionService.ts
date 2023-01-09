@@ -18,7 +18,7 @@ class MissionService {
             setTimeout(() => {
                     let drone1: Drone = { name: "DJI 276", isOnline: true, id: 20 };
                     let mission1: Mission = { date: new Date("2020-05-05"), drone: drone1, id: 50}
-                    let mission2: Mission = { date: new Date("2021-05-05"), drone: drone1, id: 50}
+                    let mission2: Mission = { date: new Date("2021-05-05"), drone: drone1, id: 51}
                     const missions : Mission[] = [mission1, mission2];
                     resolve(missions);
             }, 3000)

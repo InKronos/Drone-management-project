@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 //import { theme } from "../../../App.style";
 
-export const showMissionStyle = StyleSheet.create({
+export const showMissionsStyle = StyleSheet.create({
     content: {
         flex: 1
     },

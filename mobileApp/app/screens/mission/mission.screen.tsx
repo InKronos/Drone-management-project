@@ -10,13 +10,12 @@ import { hide, show } from "../../store/loading/loading.actions";
 import { LoadingState } from "../../store/loading/LoadingState";
 import { missionLoading, showMisssionFail, showMisssionSuccess } from "../../store/mission/mission.action";
 import { MissionState } from "../../store/mission/MissionState";
-import { showMissionsStyle } from "./ShowMissions.style";
 import { Mission } from "../../model/mission/Mission";
 import MissionService from "../../services/MissionService";
+import { missionStyle } from "./mission.style";
+import MapView from "react-native-maps";
 
-interface showDronesScreenProps {
-
-
+interface MissionScreenProps {
 
     navigation: any;
 
@@ -34,9 +33,9 @@ interface showDronesScreenProps {
 
 
 
-const ShowMissionsScreen = (props: showDronesScreenProps) => {
+const MissionScreen = (props: MissionScreenProps) => {
 
-    const goToMissionScreen = (id: number) => props.navigation.navigate("Mission", { id: id});
+    //const goToDroneScreen = (id: number) => props.navigation.navigate("Mission", { id: id});
     
     const refresh = () => props.missionLoading();
 
@@ -75,46 +74,10 @@ const ShowMissionsScreen = (props: showDronesScreenProps) => {
    
 
     return (
-        <SafeAreaView style={showMissionsStyle.content}>
-            <HeaderComponent title="Your Missions" hasBackButton={true} navigation={props.navigation}/>
-            <ScrollView 
-                
-                refreshControl={
-                    <RefreshControl
-                        refreshing={refreshing}
-                        onRefresh={onRefresh}/>
-                }>
-                { props.missionState.missionGetSuccess && missionArray.map(mission =>
-                     
-                     <List.Item
-                     key={mission.id}
-                     title={"Mission: "+ mission.date.toLocaleString()}
-                     onPress={() => goToMissionScreen(mission.id)}
-                     description={
-                        <>
-                        Drone: {mission.drone?.name}
-                        </>
-                    }
-                     left={props => <List.Icon 
-                        {...props} 
-                        icon="map-check-outline" 
-                    />}
-                     right={props => <List.Icon {...props} icon="eye" />}
-                     />
-                        
-                )}
-                { (props.missionState.error || missionArray.length === 0) && !props.missionState.missionLoading ? 
-                <View style={showMissionsStyle.content}>
-                    <Text style={showMissionsStyle.textContainer}>connection error</Text>
-                    <Button
-                        style={showMissionsStyle.button}
-                        mode="outlined"
-                        onPress={refresh}>
-                        Reconnect</Button>
-                </View>
-            : null }
-            
-            </ScrollView>
+        <SafeAreaView style={missionStyle.content}>
+            <HeaderComponent title="Mission" hasBackButton={true} navigation={props.navigation}/>
+            <MapView
+            style={{flex: 1}}/>
         </SafeAreaView>
     )
 }
@@ -134,4 +97,4 @@ const mapDispatchToProps = (dispatch: any) => (
     }, dispatch)
 )
 
-export default connect(mapStateToProps, mapDispatchToProps)(ShowMissionsScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(MissionScreen);
