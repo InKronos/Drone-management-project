@@ -1,4 +1,4 @@
 export interface MissionPath {
-    longitude: string,
-    latitude: string
+    longitude: number,
+    latitude: number
 }
