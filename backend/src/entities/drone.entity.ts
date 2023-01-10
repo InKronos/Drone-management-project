@@ -12,14 +12,18 @@ export class Drone extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number;
 
-	@Column()
+	@Column({
+		unique: true
+	})
 	droneName: string;
 
-	@Column()
+	@Column({
+		nullable: true
+	})
 	imageURL: string;
 
 	@Column()
-	isConnected: string;
+	isConnected: boolean;
 
 	@OneToMany(() => Mission, (mission) => mission.drone)
 	missions: Mission[];
