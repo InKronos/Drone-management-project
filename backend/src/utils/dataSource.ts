@@ -1,6 +1,8 @@
 import { Pilot } from "../entities/pilot.entity";
 import { DataSource } from "typeorm";
-import { Drone } from "src/entities/drone.entity";
+import { Drone } from "../entities/drone.entity";
+import { Mission } from "../entities/mission.entity";
+import { MissionPath } from "../entities/missionPath.entity";
 
 export const AppDataSource = new DataSource({
     type: 'postgres',
@@ -9,6 +11,6 @@ export const AppDataSource = new DataSource({
     username: 'projectadmin',
     password: 'mypass',
     database: 'dronemanagement',
-    entities: [Pilot, Drone],
+    entities: [Pilot, Drone, Mission, MissionPath],
     synchronize: true,
 })

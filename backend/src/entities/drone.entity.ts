@@ -3,7 +3,9 @@ import {
 	Column,
     BaseEntity,
     PrimaryGeneratedColumn,
+	OneToMany,
 } from 'typeorm';
+import { Mission } from './mission.entity';
 
 @Entity('drone')
 export class Drone extends BaseEntity {
@@ -19,5 +21,6 @@ export class Drone extends BaseEntity {
 	@Column()
 	isConnected: string;
 
-    
+	@OneToMany(() => Mission, (mission) => mission.drone)
+	missions: Mission[];
 }
