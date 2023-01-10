@@ -6,14 +6,13 @@ export const signJwt = (
   return jwt.sign(payload, 'Secret');
 };
 
-export const verifyJwt = <T>(
+export const verifyJwt = (
     token: string,
-    keyName: 'accessTokenPublicKey' | 'refreshTokenPublicKey'
-  ): T | null => {
+  ) => {
     try {
-      const decoded = jwt.verify(token, 'Secret') as T;
-  
-      return decoded;
+      const decoded = jwt.verify(token, 'Secret');
+      console.log(decoded.sub);
+      return decoded.sub?.toString();
     } catch (error) {
       return null;
     }

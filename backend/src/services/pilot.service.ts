@@ -9,6 +9,10 @@ export const findPilotByEmail = async({email} : {email: string}) => {
     return await pilotRepository.findOneBy({email});
 };
 
+export const findPilotById = async({id} : {id: number}) => {
+    return await pilotRepository.findOneBy({id});
+};
+
 export const createPilot = async(
     name: string,
     email: string,
