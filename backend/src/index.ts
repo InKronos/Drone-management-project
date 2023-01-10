@@ -9,6 +9,7 @@ import bodyParser from 'body-parser';
 import { logoutPilot } from './routes/logout';
 import { me } from './routes/me';
 import { createDrone } from './routes/createDrone';
+import { getDronesConnected } from './routes/getDronesConnected';
 
 
 dotenv.config();
@@ -34,6 +35,7 @@ AppDataSource.initialize()
     app.use(logoutPilot);
     app.use(me);
     app.use(createDrone);
+    app.use(getDronesConnected);
     app.listen(port, () => {
       console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
     });
