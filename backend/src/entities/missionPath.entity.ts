@@ -6,10 +6,10 @@ export class MissionPath extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number;
 
-	@Column()
+	@Column({type: "decimal", precision: 10, scale: 6})
 	longitude: number;
 
-	@Column()
+	@Column({type: "decimal", precision: 10, scale: 6})
 	latitude: number;
 
 	@ManyToOne(() => Mission, (mission) => mission.missionPath)
