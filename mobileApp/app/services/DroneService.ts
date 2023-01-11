@@ -9,8 +9,8 @@ class DroneService {
             setTimeout(() => {
                 if(result === "positive"){
                     const drones: Drone[] = [];
-                    let drone1: Drone = { name: "DJI 276", id: 20 };
-                    let drone2: Drone = { name: "Bayraktar", id: 21 };
+                    let drone1: Drone = { droneName: "DJI 276", id: 20 };
+                    let drone2: Drone = { droneName: "Bayraktar", id: 21 };
                     drones.push(drone1);
                     drones.push(drone2);
                     resolve(drones);
@@ -40,37 +40,37 @@ class DroneService {
         })
     }
 
-    getUserDrones(result: string){
+    getUserDrones(userToken: string){
         return new Promise<Drone[]>((resolve, reject) => {
-            setTimeout(() => {
-                if(result === "positive"){
-                    const drones: Drone[] = [];
-                    let drone1: Drone = { name: "DJI 276", isOnline: true, id: 20 };
-                    let drone2: Drone = { name: "Bayraktar", isOnline: false, id: 21 };
-                    drones.push(drone1);
-                    drones.push(drone2);
+            axios.post('http://192.168.0.197:8000/api/pilot/drones',{
+                    token: userToken
+                }).then(res => {
+                    console.log(res);
+                    const drones: Drone[] = res.data;
                     resolve(drones);
-                }
-                else{
-                    reject({message: "Connection problems"})
-                }
-
-            }, 3000)
-        })
+                })
+                .catch(err => {
+                    console.log("dupa");
+                    console.log(err.message);
+                    reject(err.message);
+                })
+         })
     }
 
     getDrone(id: number){
         return new Promise<Drone>((resolve, reject) => {
-            setTimeout(() => {
-                if(id === 20){
-                    const drone: Drone = { name: "DJI 276", isOnline: true, id: 20, numberOfBatteries: 4, numberOfChargedBatteries: 2, numberOfFinishedMissions: 0, isInMission: false };
+            axios.post('http://192.168.0.197:8000/api/drone',{
+                    id: id
+                }).then(res => {
+                    console.log(res);
+                    const drone: Drone = res.data;
                     resolve(drone);
-                }
-                else{
-                    reject({message: "Connection problems"})
-                }
-
-            }, 3000)
+                })
+                .catch(err => {
+                    console.log("dupa");
+                    console.log(err.message);
+                    reject(err.message);
+                })
         })
     }
 }

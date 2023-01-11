@@ -58,6 +58,7 @@ const MissionScreen = (props: MissionScreenProps) => {
 
 
     useEffect(() => {
+        console.log("hello");
         props.missionLoading();
     }, []);
 
@@ -82,6 +83,7 @@ const MissionScreen = (props: MissionScreenProps) => {
 
     useEffect(() => {
         props.showLoading();
+        console.log(props.route.params.id);
         if(props.missionState.missionLoading){
             MissionService.getMissionData(props.route.params.id).then(mission => {
                 setMission(mission);
@@ -96,6 +98,7 @@ const MissionScreen = (props: MissionScreenProps) => {
                     latitude:  0,
                     longitude: 0,
                 })
+                console.log(mission);
                 setRegion(initialRegion);
                 props.showMissionSuccess();
                 props.hideLoading();
@@ -161,7 +164,7 @@ const MissionScreen = (props: MissionScreenProps) => {
                 <Card.Title title="Mission details"/>
                 <Card.Content>
                     <Text>Date: {mission.missionStart.toLocaleString()}</Text> 
-                    <Text>Drone used: {mission.drone.name}</Text> 
+                    <Text>Drone used: {mission.drone.droneName}</Text> 
                     {
                         mission.missionEnd !== undefined ? 
                         <Text>Mission duration: { (mission?.missionEnd.getTime() - mission.missionStart.getTime() ) /60000 } min</Text> 

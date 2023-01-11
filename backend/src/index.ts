@@ -18,6 +18,7 @@ import { updateMission } from './routes/updateMission';
 import { getPilotMissions } from './routes/getPilotMissions';
 import { isMission } from './routes/isMission';
 import { getPilotBestDrone } from './routes/getPilotBestDrone';
+import { getDrone } from './routes/getDrone';
 
 
 dotenv.config();
@@ -43,6 +44,7 @@ AppDataSource.initialize()
     app.use(logoutPilot);
     app.use(me);
     app.use(createDrone);
+    app.use(getDrone);
     app.use(getDronesConnected);
     app.use(connectToDrone);
     app.use(getPilotDrones);

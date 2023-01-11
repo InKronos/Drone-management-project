@@ -23,7 +23,7 @@ export class Drone extends BaseEntity {
 	imageURL: string;
 
 	@Column()
-	isConnected: boolean;
+	isOnline: boolean;
 
 	@OneToMany(() => Mission, (mission) => mission.drone)
 	missions: Mission[];

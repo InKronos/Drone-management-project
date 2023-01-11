@@ -89,7 +89,7 @@ const DroneScreen = (props: droneScreenProps) => {
                         { drone?.isOnline ? <View style={droneStyle.active}></View> : <View style={droneStyle.offline}></View>}
                     </View>
                     <View style={droneStyle.textContainer}>
-                        <Text style={droneStyle.nameOfDrone}>{drone?.name}</Text>
+                        <Text style={droneStyle.nameOfDrone}>{drone?.droneName}</Text>
                         <Text>Missions complited: {drone?.numberOfFinishedMissions}</Text>
                         <Text>Numbers of batteries fully charged: {drone?.numberOfChargedBatteries}/{drone?.numberOfBatteries}</Text>
                         <Text>{drone?.isInMission ? "In mission" : "On ground"}</Text>

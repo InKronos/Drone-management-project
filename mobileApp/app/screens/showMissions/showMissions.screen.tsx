@@ -13,6 +13,7 @@ import { MissionState } from "../../store/mission/MissionState";
 import { showMissionsStyle } from "./ShowMissions.style";
 import { Mission } from "../../model/mission/Mission";
 import MissionService from "../../services/MissionService";
+import { LoginState } from "../../store/login/LoginState";
 
 interface showDronesScreenProps {
 
@@ -22,6 +23,7 @@ interface showDronesScreenProps {
 
     loadingState: LoadingState;
     missionState: MissionState;
+    loginState: LoginState;
 
     missionLoading: Function;
     showMissionSuccess: Function;
@@ -55,7 +57,7 @@ const ShowMissionsScreen = (props: showDronesScreenProps) => {
     useEffect(() => {
         props.showLoading();
         if(props.missionState.missionLoading){
-            MissionService.getUserMissions().then(missions => {
+            MissionService.getUserMissions(props.loginState.userToken).then(missions => {
                 setMissionArray(missions);
                 props.showMissionSuccess();
                 props.hideLoading();
@@ -92,7 +94,7 @@ const ShowMissionsScreen = (props: showDronesScreenProps) => {
                      onPress={() => goToMissionScreen(mission.id)}
                      description={
                         <>
-                        Drone: {mission.drone?.name}
+                        Drone: {mission.drone?.droneName}
                         </>
                     }
                      left={props => <List.Icon 
@@ -121,7 +123,8 @@ const ShowMissionsScreen = (props: showDronesScreenProps) => {
 
 const mapStateToProps = (store: AppState) => ({
     loadingState: store.loading,
-    missionState: store.mission
+    missionState: store.mission,
+    loginState: store.login
 })
 
 const mapDispatchToProps = (dispatch: any) => (

@@ -13,6 +13,7 @@ import { DroneState } from "../../store/drone/DroneState";
 import { hide, show } from "../../store/loading/loading.actions";
 import { LoadingState } from "../../store/loading/LoadingState";
 import { showDronesStyle } from "./showDrones.style";
+import { LoginState } from "../../store/login/LoginState";
 
 interface showDronesScreenProps {
 
@@ -22,6 +23,7 @@ interface showDronesScreenProps {
 
     loadingState: LoadingState;
     droneState: DroneState;
+    loginState: LoginState;
 
 
     getingDrones: Function;
@@ -56,7 +58,7 @@ const ShowDronesScreen = (props: showDronesScreenProps) => {
 
     useEffect(() => {
         if(refreshing){
-            DroneService.getUserDrones("positive").then(drones => {
+            DroneService.getUserDrones(props.loginState.userToken).then(drones => {
                 setDronesArray(drones);
                 props.showDronesSuccess();
                 props.hideLoading();
@@ -88,8 +90,8 @@ const ShowDronesScreen = (props: showDronesScreenProps) => {
                 { props.droneState.droneGetSuccess && dronesArray.map(drone =>
                      
                      <List.Item
-                     key={drone.name}
-                     title={drone.name}
+                     key={drone.id}
+                     title={drone.droneName}
                      onPress={() => goToDroneScreen(drone.id)}
                      description={
                         <>{drone.isOnline ? <Text style={showDronesStyle.online}>Online</Text> : <Text style={showDronesStyle.offline}>Offline</Text>}</>
@@ -126,7 +128,8 @@ const ShowDronesScreen = (props: showDronesScreenProps) => {
 
 const mapStateToProps = (store: AppState) => ({
     loadingState: store.loading,
-    droneState: store.drone
+    droneState: store.drone,
+    loginState: store.login
 })
 
 const mapDispatchToProps = (dispatch: any) => (

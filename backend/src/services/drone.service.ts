@@ -8,7 +8,7 @@ export const createDrone = async(
     droneName: string,
 ) => {
     return (await AppDataSource.manager.save(
-        AppDataSource.manager.create(Drone, {droneName: droneName, isConnected: true}) as Drone
+        AppDataSource.manager.create(Drone, {droneName: droneName, isOnline: true}) as Drone
     ));
 };
 
@@ -17,7 +17,7 @@ export const findDroneByName = async ({droneName} : {droneName: string}) => {
 };
 
 export const findConnectedDrones = async() => {
-    return await droneRepository.findBy({isConnected: true});
+    return await droneRepository.findBy({isOnline: true});
 };
 
 export const findDroneById = async({id} : {id: number}) => {

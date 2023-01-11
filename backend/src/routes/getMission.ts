@@ -7,17 +7,14 @@ import { findMissionById } from "../services/mission.service";
 
 const router = express.Router();
 
-router.get('/api/mission', async (req, res, next) => {
+router.post('/api/mission', async (req, res, next) => {
     try{
         
         const { id } = req.body;
         
  
-        const mission = await findMissionById(id);
-        res.status(200).json({
-            status: 'success',
-            mission: mission
-            });
+        const [mission] = await findMissionById(id);
+        res.status(200).json( mission);
        
       
     } 
