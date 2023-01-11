@@ -29,7 +29,7 @@ export class Pilot extends BaseEntity {
 
 	@ManyToMany(() => Drone)
 	@JoinTable()
-	drone: Drone[];
+	drones: Drone[];
 
     static async comparePasswords(
 		candidatePassword: string,

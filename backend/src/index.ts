@@ -10,6 +10,8 @@ import { logoutPilot } from './routes/logout';
 import { me } from './routes/me';
 import { createDrone } from './routes/createDrone';
 import { getDronesConnected } from './routes/getDronesConnected';
+import { connectToDrone } from './routes/connectToDrone';
+import { getPilotDrones } from './routes/getPilotDrones';
 
 
 dotenv.config();
@@ -36,6 +38,8 @@ AppDataSource.initialize()
     app.use(me);
     app.use(createDrone);
     app.use(getDronesConnected);
+    app.use(connectToDrone);
+    app.use(getPilotDrones);
     app.listen(port, () => {
       console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
     });

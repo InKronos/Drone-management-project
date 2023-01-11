@@ -1,22 +1,21 @@
 import express from "express";
+import { addDroneToPilot, findPilotById, findPilotByIdWithDrones } from "../services/pilot.service";
 import { verifyJwt } from "../utils/jwt";
-import { Pilot } from "../entities/pilot.entity";
-import { findPilotByEmail, findPilotById, signTokens } from "../services/pilot.service";
-import AppError from "../utils/appError";
+import { createDrone, findDroneById } from "../services/drone.service";
 
 
 const router = express.Router();
 
-router.get('/api/me', async (req, res, next) => {
+router.post('/api/pilot/drones', async (req, res, next) => {
     try{
+        
         const { token } = req.body;
         
         const sub = verifyJwt(token);
         console.log(sub);
         if(sub !== undefined && sub !== null){
             let id = parseInt(sub);
-            const pliot = await findPilotById({id});
-
+            const pliot = await findPilotByIdWithDrones({id});
             res.status(200).json({
             status: 'success',
             pliot
@@ -29,8 +28,6 @@ router.get('/api/me', async (req, res, next) => {
             });;
         }
       
-
-        
     } 
     catch (err: any) {
         next(err);
@@ -38,4 +35,4 @@ router.get('/api/me', async (req, res, next) => {
 });
 
 
-export {router as me}
+export {router as getPilotDrones}

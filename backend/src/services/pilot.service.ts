@@ -2,6 +2,7 @@ import { Pilot } from "../entities/pilot.entity"
 import { AppDataSource } from "../utils/dataSource"
 import { signJwt } from "../utils/jwt";
 import config from "config";
+import { Drone } from "../entities/drone.entity";
 
 const pilotRepository = AppDataSource.getRepository(Pilot);
 
@@ -12,6 +13,14 @@ export const findPilotByEmail = async({email} : {email: string}) => {
 export const findPilotById = async({id} : {id: number}) => {
     return await pilotRepository.findOneBy({id});
 };
+
+export const findPilotByIdWithDrones = async({id} : {id: number}) => {
+    return await pilotRepository.find({
+        relations: ['drones'],
+        where: { id: id }
+    });
+};
+
 
 export const createPilot = async(
     name: string,
@@ -33,3 +42,10 @@ export const signTokens = async (pilot: Pilot) => {
   
     return { access_token, refresh_token };
   };
+
+export const addDroneToPilot = async(pilot: Pilot, drone: Drone) => {
+    console.log(drone);
+    pilot.drones === undefined ?
+        pilot.drones = [drone] : pilot.drones.push(drone);
+    return (await AppDataSource.manager.save(pilot));
+}

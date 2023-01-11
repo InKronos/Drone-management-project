@@ -18,4 +18,8 @@ export const findDroneByName = async ({droneName} : {droneName: string}) => {
 
 export const findConnectedDrones = async() => {
     return await droneRepository.findBy({isConnected: true});
-}
+};
+
+export const findDroneById = async({id} : {id: number}) => {
+    return await droneRepository.findOneBy({id});
+};
