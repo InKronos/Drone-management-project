@@ -29,14 +29,16 @@ interface LoginScreenProps {
 const LoginScreen = (props: LoginScreenProps) => {
 
     const [userLogin, setUserLogin] = useState({email: "", password: ""});
-    
+    const [token, setToken] = useState();
     useEffect(() => {
         if (props.loginState.isLoggingIn){
             props.showLoading();
 
             AuthService.login(userLogin.email, userLogin.password).then(res => {
-                console.log(res);
-                props.loginSuccess(res.data.token);
+                console.log(res.data.access_token);
+                setToken(res.data.access_token);
+                props.loginSuccess(token);
+                console.log(props.loginState.userToken);
                 props.navigation.navigate("Home");
                 props.hideLoading();
             })

@@ -42,6 +42,19 @@ export const findMissionByDrone = async(
     });
 };
 
+export const findCountMissionByDrone = async(
+    drone: Drone
+) => {
+    return await missionRepository.findAndCount({
+        relations: {
+            drone: true
+        },
+        where: { 
+            drone: {
+                id: drone.id
+        }}
+    });
+};
 
 export const updateMission = async(
     mission: Mission,

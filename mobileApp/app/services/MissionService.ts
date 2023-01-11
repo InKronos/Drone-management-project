@@ -1,3 +1,4 @@
+import axios from "axios";
 import React from "react";
 import { Drone } from "../model/drone/Drone";
 import { Mission } from "../model/mission/Mission";
@@ -5,12 +6,15 @@ import { MissionPath } from "../model/mission/MissionPath";
 
 
 class MissionService {
-    getMission(){
+    getMission(userToken: string){
         return new Promise<boolean>((resolve, reject) => {
-            setTimeout(() => {
-                    //const mission: Mission = { id: 20, date: new Date("2019-01-16") };
-                    resolve(true);
-            }, 3000)
+            axios.post('http://192.168.0.197:8000/api/pilot/ismissions',{
+                    token: userToken
+                }).then(res => resolve(res.data))
+                .catch(err => {
+                    reject(err.message);
+                })
+            
         })
     }
 

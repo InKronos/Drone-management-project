@@ -5,6 +5,7 @@ import { Button, Card, Text } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { connect } from "react-redux";
 import { HeaderComponent } from "../../components/header/header.component";
+import { BestDrone } from "../../model/drone/BestDrone";
 import { Drone } from "../../model/drone/Drone";
 import DroneService from "../../services/DroneService";
 import MissionService from "../../services/MissionService";
@@ -13,6 +14,7 @@ import { getingDrones, showDronesFail, showDronesSuccess } from "../../store/dro
 import { DroneState } from "../../store/drone/DroneState";
 import { hide, show } from "../../store/loading/loading.actions";
 import { LoadingState } from "../../store/loading/LoadingState";
+import { LoginState } from "../../store/login/LoginState";
 import { missionLoading, showMisssionFail, showMisssionSuccess } from "../../store/mission/mission.action";
 import { homeStyle } from "./home.style";
 
@@ -23,7 +25,7 @@ interface homeScreenProps {
 
     loadingState: LoadingState;
     droneState: DroneState;
-
+    loginState: LoginState;
 
     getingDrones: Function;
     showDronesSuccess: Function;
@@ -40,7 +42,7 @@ const HomeScreen = (props: homeScreenProps) => {
 
 
 
-    const [mostUsedDrone, setMostUsedDrone] = useState<Drone>();
+    const [mostUsedDrone, setMostUsedDrone] = useState<BestDrone>();
     const [isMisson, setIsMission] = useState<boolean>(false);
     const [isDrone, setIsDrone] = useState<boolean>(false);
 
@@ -48,14 +50,17 @@ const HomeScreen = (props: homeScreenProps) => {
 
     useEffect(() => {
         if(props.droneState.droneLoading){
+            console.log("hej");
+            console.log(props.loginState.userToken);
             props.showLoading();
-            DroneService.getMostUsedDrone("positive").then(drone => {
+            DroneService.getMostUsedDrone(props.loginState.userToken).then(drone => {
+                console.log(drone);
                 if(drone !== null){
                     setIsDrone(true);
                     setMostUsedDrone(drone);
                 }
                 else
-                    setIsDrone(true);
+                    setIsDrone(false);
                 props.showDronesSuccess();
                 props.hideLoading();
             }).catch(error => {
@@ -63,8 +68,8 @@ const HomeScreen = (props: homeScreenProps) => {
                 props.hideLoading();
             });
 
-            MissionService.getMission().then(isMisson => {
-                setIsMission(isMisson);
+            MissionService.getMission(props.loginState.userToken).then(isMission => {
+                setIsMission(isMission);
             }).catch(error => {
                 props.showDronesFail(error);
                 props.hideLoading();
@@ -83,8 +88,8 @@ const HomeScreen = (props: homeScreenProps) => {
                     <Card.Title title="Drones"/>
                     { props.droneState.droneGetSuccess ? 
                         <Card.Content>
-                        <Text>Most used drone: {mostUsedDrone?.name}</Text>
-                        <Text>Completed missions: 300</Text>
+                        <Text>Most used drone: {mostUsedDrone?.droneName}</Text>
+                        <Text>Completed missions: {mostUsedDrone?.missionCount}</Text>
                         <Button 
                             style={homeStyle.cardButton}
                             onPress={goToShowDrones} 
@@ -131,7 +136,8 @@ const HomeScreen = (props: homeScreenProps) => {
 const mapStateToProps = (store: AppState) => ({
     loadingState: store.loading,
     droneState: store.drone,
-    missionState: store.mission
+    missionState: store.mission,
+    loginState: store.login
 })
 
 const mapDispatchToProps = (dispatch: any) => (

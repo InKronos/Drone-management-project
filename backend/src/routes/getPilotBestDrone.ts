@@ -3,12 +3,12 @@ import { addDroneToPilot, findPilotById, findPilotByIdWithDrones } from "../serv
 import { verifyJwt } from "../utils/jwt";
 import { createDrone, findDroneById } from "../services/drone.service";
 import { Mission } from "../entities/mission.entity";
-import { findMissionByDrone } from "../services/mission.service";
+import { findCountMissionByDrone, findMissionByDrone } from "../services/mission.service";
 
 
 const router = express.Router();
 
-router.get('/api/pilot/missions', async (req, res, next) => {
+router.post('/api/pilot/bestdrone', async (req, res, next) => {
     try{
         
         const { token } = req.body;
@@ -20,15 +20,13 @@ router.get('/api/pilot/missions', async (req, res, next) => {
             const pliot = await findPilotByIdWithDrones({id});
             console.log(pliot[0].drones);
             const missionPromise = pliot[0].drones.map(async drone => {
-                const [missions] = await findMissionByDrone(drone);
-                return missions;
+                const [missions, numberCount] = await findCountMissionByDrone(drone);
+                return {missionsCount: numberCount, droneName: drone.droneName};
             })
             const missions = await Promise.all(missionPromise);
+            const bestDrone = missions.sort((firstItem, secondItem) => secondItem.missionsCount - firstItem.missionsCount)
             console.log(missions);
-            res.status(200).json({
-                status: 'success',
-                missions: missions
-                });
+            res.status(200).json(missions[0]);
         }
         else{
             return res.status(400).json({
@@ -44,4 +42,4 @@ router.get('/api/pilot/missions', async (req, res, next) => {
 });
 
 
-export {router as getPilotMissions}
+export {router as getPilotBestDrone}

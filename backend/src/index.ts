@@ -16,6 +16,8 @@ import { createMission } from './routes/createMission';
 import { getMission } from './routes/getMission';
 import { updateMission } from './routes/updateMission';
 import { getPilotMissions } from './routes/getPilotMissions';
+import { isMission } from './routes/isMission';
+import { getPilotBestDrone } from './routes/getPilotBestDrone';
 
 
 dotenv.config();
@@ -48,6 +50,8 @@ AppDataSource.initialize()
     app.use(getMission);
     app.use(updateMission);
     app.use(getPilotMissions);
+    app.use(isMission);
+    app.use(getPilotBestDrone);
     app.listen(port, () => {
       console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
     });

@@ -1,4 +1,6 @@
+import axios from "axios";
 import React from "react";
+import { BestDrone } from "../model/drone/BestDrone";
 import { Drone } from "../model/drone/Drone";
 
 class DroneService {
@@ -21,19 +23,20 @@ class DroneService {
         })
     }
 
-    getMostUsedDrone(result: string){
-        return new Promise<Drone | null>((resolve, reject) => {
-            setTimeout(() => {
-                if(result === "positive"){
-                    const drone: Drone = { name: "DJI 300", id: 20 };
-   
-                    resolve(drone);
-                }
-                else{
-                    reject({message: "Connection problems"})
-                }
-
-            }, 3000)
+    getMostUsedDrone(userToken: string){
+        return new Promise<BestDrone>((resolve, reject) => {
+            axios.post('http://192.168.0.197:8000/api/pilot/bestdrone',{
+                token: userToken
+            }).then(res => {
+                console.log(res);
+                const BestDrone = {missionCount: res.data.missionsCount, droneName: res.data.droneName}
+                resolve(BestDrone)
+            })
+            .catch(err => {
+                console.log("dupa");
+                console.log(err.message);
+                reject(err.message);
+            })
         })
     }
 

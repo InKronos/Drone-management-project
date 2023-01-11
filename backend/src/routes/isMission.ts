@@ -8,7 +8,7 @@ import { findMissionByDrone } from "../services/mission.service";
 
 const router = express.Router();
 
-router.get('/api/pilot/missions', async (req, res, next) => {
+router.post('/api/pilot/ismissions', async (req, res, next) => {
     try{
         
         const { token } = req.body;
@@ -25,10 +25,8 @@ router.get('/api/pilot/missions', async (req, res, next) => {
             })
             const missions = await Promise.all(missionPromise);
             console.log(missions);
-            res.status(200).json({
-                status: 'success',
-                missions: missions
-                });
+            if(missions.length !== 0)
+            res.status(200).json((missions.length !== 0));
         }
         else{
             return res.status(400).json({
@@ -44,4 +42,4 @@ router.get('/api/pilot/missions', async (req, res, next) => {
 });
 
 
-export {router as getPilotMissions}
+export {router as isMission}
