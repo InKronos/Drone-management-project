@@ -37,14 +37,15 @@ class MissionService {
                     id: id
                 }).then(res => {
                     const mission = res.data;
+                    console.log(mission);
                     const missionPathWithoutId : MissionPathWhithoutId[]= []; 
                     for(let i = 0; i < mission.missionPath.length; i++){
-                        missionPathWithoutId.push({latitude: mission.missionPath[i].latitude, longitude: mission.missionPath[i].longitude})
+                        missionPathWithoutId.push({latitude: parseFloat(mission.missionPath[i].latitude), longitude: parseFloat(mission.missionPath[i].longitude)})
                     }
                     mission.missionPath = missionPathWithoutId;
                     console.log("xxxx");
                     console.log(mission);
-                    resolve(mission);
+                    resolve(mission);  
                 })
                 .catch(err => {
                     reject(err.message);
