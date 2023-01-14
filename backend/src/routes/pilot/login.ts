@@ -1,7 +1,7 @@
 import express from "express";
-import { Pilot } from "../entities/pilot.entity";
-import { findPilotByEmail, signTokens } from "../services/pilot.service";
-import AppError from "../utils/appError";
+import { Pilot } from "../../entities/pilot.entity";
+import { findPilotByEmail, signTokens } from "../../services/pilot.service";
+import AppError from "../../utils/appError";
 
 
 const router = express.Router();

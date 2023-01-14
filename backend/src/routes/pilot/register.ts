@@ -1,5 +1,5 @@
 import express from "express";
-import { createPilot } from "../services/pilot.service";
+import { createPilot } from "../../services/pilot.service";
 
 
 const router = express.Router();

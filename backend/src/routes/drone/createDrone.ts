@@ -1,17 +1,19 @@
 import express from "express";
-import { findDroneById } from "../services/drone.service";
+import { createDrone } from "../../services/drone.service";
 
 
 const router = express.Router();
 
-router.post('/api/drone', async (req, res, next) => {
+router.post('/api/drone/create', async (req, res, next) => {
     try{
-        const { id } = req.body;
+        const { droneName } = req.body;
      
-        const drone = await findDroneById(id);
+        const drone = await createDrone(droneName);
         
     
-        res.status(200).json(drone);
+        res.status(200).json({
+        status: 'success',
+        });
     } 
     catch (err: any) {
         if (err.code === '23505') {
@@ -25,4 +27,4 @@ router.post('/api/drone', async (req, res, next) => {
 });
 
 
-export {router as getDrone}
+export {router as createDrone}

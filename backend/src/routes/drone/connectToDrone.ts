@@ -1,7 +1,7 @@
 import express from "express";
-import { addDroneToPilot, findPilotById, findPilotByIdWithDrones } from "../services/pilot.service";
-import { verifyJwt } from "../utils/jwt";
-import { createDrone, findDroneById } from "../services/drone.service";
+import { addDroneToPilot, findPilotById, findPilotByIdWithDrones } from "../../services/pilot.service";
+import { verifyJwt } from "../../utils/jwt";
+import { createDrone, findDroneById } from "../../services/drone.service";
 
 
 const router = express.Router();

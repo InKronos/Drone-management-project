@@ -1,18 +1,18 @@
 import express from "express";
-import { createDrone } from "../services/drone.service";
+import { Drone } from "../../entities/drone.entity";
+import { createDrone, findConnectedDrones } from "../../services/drone.service";
 
 
 const router = express.Router();
 
-router.post('/api/drone/create', async (req, res, next) => {
-    try{
-        const { droneName } = req.body;
-     
-        const drone = await createDrone(droneName);
+router.get('/api/drone/getconnected', async (req, res, next) => {
+    try{     
+        const drones: Drone[] = await findConnectedDrones();
         
     
         res.status(200).json({
         status: 'success',
+        drones
         });
     } 
     catch (err: any) {
@@ -27,4 +27,4 @@ router.post('/api/drone/create', async (req, res, next) => {
 });
 
 
-export {router as createDrone}
+export {router as getDronesConnected}
