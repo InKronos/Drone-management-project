@@ -9,6 +9,7 @@ import ShowDronesScreen from "./screens/showDrones/showDrones.screen";
 import DroneScreen from "./screens/drone/drone.screen";
 import ShowMissionsScreen from "./screens/showMissions/showMissions.screen";
 import MissionScreen from "./screens/mission/mission.screen";
+import createMissionScreen from "./screens/createMission/createMission.screen";
 
 
 const { Navigator, Screen } = createNativeStackNavigator();
@@ -28,6 +29,7 @@ const AppNavigator = () => (
             <Screen name="Drone" component={DroneScreen}></Screen>
             <Screen name="ShowMissions" component={ShowMissionsScreen}></Screen>
             <Screen name="Mission" component={MissionScreen}></Screen>
+            <Screen name="CreateMission" component={createMissionScreen}></Screen>
         </Navigator>
     </NavigationContainer>
 )

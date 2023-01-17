@@ -37,7 +37,6 @@ export const createPilot = async(
 export const signTokens = async (pilot: Pilot) => {
 
     const access_token = signJwt({ sub: pilot.id });
-  
     const refresh_token = signJwt({ sub: pilot.id });
   
     return { access_token, refresh_token };

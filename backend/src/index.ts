@@ -16,7 +16,7 @@ import { createMission } from './routes/mission/createMission';
 import { getMission } from './routes/mission/getMission';
 import { updateMission } from './routes/mission/updateMission';
 import { getPilotMissions } from './routes/pilot/getPilotMissions';
-import { isMission } from './routes/mission/isMission';
+import { isMission } from './routes/pilot/isMission';
 import { getPilotBestDrone } from './routes/pilot/getPilotBestDrone';
 import { getDrone } from './routes/drone/getDrone';
 

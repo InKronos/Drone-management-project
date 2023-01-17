@@ -6,7 +6,8 @@ export const droneStyle = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         padding: 20,
-        alignSelf: "center"
+        alignSelf: "center",
+        height: "100%"
     },
     profileImage: {
         width: 200,
@@ -46,5 +47,8 @@ export const droneStyle = StyleSheet.create({
         fontSize: 30,
         fontWeight: "bold",
         fontStyle: "italic"
+    },
+    button:{
+        marginTop: 20
     }
 })

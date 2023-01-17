@@ -8,7 +8,7 @@ import { findMissionByDrone } from "../../services/mission.service";
 
 const router = express.Router();
 
-router.post('/api/pilot/ismissions', async (req, res, next) => {
+router.post('/api/pilot/ismission', async (req, res, next) => {
     try{
         
         const { token } = req.body;
