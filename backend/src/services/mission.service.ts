@@ -23,7 +23,10 @@ export const createMission = async(
 
 export const findMissionById = async({id} : {id: number}) => {
     return await missionRepository.find({
-        relations: ['missionPath'],
+        relations: {
+            missionPath: true,
+            drone: true
+        },
         where: { id: id }
     });
 };
@@ -67,6 +70,7 @@ export const updateMission = async(
         missionPath.longitude = longitude;
         await AppDataSource.manager.save(missionPath);
         mission.missionPath.push(missionPath);
+        console.log(isEnd);
         if(isEnd) 
             mission.missionEnd = new Date();
         return await AppDataSource.manager.save(mission);

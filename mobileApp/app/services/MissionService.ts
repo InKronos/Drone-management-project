@@ -9,7 +9,7 @@ import { MissionPathWhithoutId } from "../model/mission/MissionPathWithoutId";
 class MissionService {
     getMission(userToken: string){
         return new Promise<boolean>((resolve, reject) => {
-            axios.post('http://192.168.0.197:8000/api/pilot/ismissions',{
+            axios.post('http://192.168.0.197:8000/api/pilot/ismission',{
                     token: userToken
                 }).then(res => resolve(res.data))
                 .catch(err => {

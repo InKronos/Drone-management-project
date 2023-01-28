@@ -21,7 +21,7 @@ export const HeaderComponent = (props: HeaderComponentParams) => {
         <Appbar.Header style={headerStyle.appBack}>
             {
                 props.hasBackButton ?
-                <Appbar.BackAction onPress={goBack}/>
+                <Appbar.BackAction onPress={goBack} color={headerStyle.menu.color} />
                 :
                 <Menu
                     visible={visible}

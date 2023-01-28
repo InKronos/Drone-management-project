@@ -138,7 +138,7 @@ const MissionScreen = (props: MissionScreenProps) => {
                     <Marker
                         description="Start"
                         coordinate={mission.missionPath[0]}/>
-                    { mission?.missionEnd !== undefined ? 
+                    { mission?.missionEnd !== undefined && mission?.missionEnd !== null ? 
                         <Marker
                         description="drone"
                         coordinate={mission.missionPath[mission.missionPath.length - 1]}/>
@@ -166,7 +166,7 @@ const MissionScreen = (props: MissionScreenProps) => {
                     <Text>Date: {mission.missionStart.toLocaleString()}</Text> 
                     <Text>Drone used: {mission.drone.droneName}</Text> 
                     {
-                        mission.missionEnd !== undefined ? 
+                        mission.missionEnd !== undefined && mission.missionEnd !== null ? 
                         <Text>Mission duration: { (mission?.missionEnd.getTime() - mission.missionStart.getTime() ) /60000 } min</Text> 
                         : <Text>Mission duration: in place</Text> 
                     }

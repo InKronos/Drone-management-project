@@ -20,10 +20,11 @@ router.post('/api/pilot/missions', async (req, res, next) => {
             const pliot = await findPilotByIdWithDrones({id});
             console.log(pliot[0].drones);
             const missionPromise = pliot[0].drones.map(async drone => {
-                const [missions] = await findMissionByDrone(drone);
-                return missions;
+                const missionsOfDrone = await findMissionByDrone(drone);
+                console.log(missionsOfDrone);
+                return missionsOfDrone;
             })
-            const missions = await Promise.all(missionPromise);
+            const [missions] = await Promise.all(missionPromise);
             console.log(missions);
             res.status(200).json( missions );
         }

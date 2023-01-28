@@ -13,7 +13,9 @@ router.post('/api/mission/update', async (req, res, next) => {
         const { id, longitude, latitude, isEnd } = req.body;
         
  
-        const mission = await findMissionById(id);
+        const mission = await findMissionById({id: id});
+        console.log(mission);
+
         await updateMission(mission[0], isEnd, longitude, latitude);
         res.status(200).json({
             status: 'success',

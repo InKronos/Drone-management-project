@@ -92,8 +92,8 @@ const DroneScreen = (props: droneScreenProps) => {
                     </View>
                     <View style={droneStyle.textContainer}>
                         <Text style={droneStyle.nameOfDrone}>{drone?.droneName}</Text>
-                        <Text>Missions complited: {drone?.numberOfFinishedMissions}</Text>
-                        <Text>Numbers of batteries fully charged: {drone?.numberOfChargedBatteries}/{drone?.numberOfBatteries}</Text>
+                        <Text>Missions complited: 1{drone?.numberOfFinishedMissions}</Text>
+                        <Text>Numbers of batteries fully charged: 1/2{drone?.numberOfChargedBatteries}{drone?.numberOfBatteries}</Text>
                         <Text>{drone?.isInMission ? "In mission" : "On ground"}</Text>
                     </View>
                     <Button mode="contained" style={droneStyle.button} onPress={() => goToCreateMissionScreen(drone.id)}>Create mission</Button>

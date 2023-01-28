@@ -15,12 +15,17 @@ export const createMissionStyle = StyleSheet.create({
         backgroundColor: theme.colors.primary,
         color: "white"
     },
-
+  
     missionDetails: {
         height: 500,
         position: "absolute",
     },
-
+    textContainer: {
+        height: "40%",
+        justifyContent: 'center',
+        alignSelf: "center",
+    },
+    
     markerImage: {
         width: 45,
         height: 45

@@ -12,7 +12,7 @@ import { missionLoading, showMisssionFail, showMisssionSuccess } from "../../sto
 import { MissionState } from "../../store/mission/MissionState";
 import { Mission } from "../../model/mission/Mission";
 import MissionService from "../../services/MissionService";
-import MapView, { Marker, Polyline, Region } from "react-native-maps";
+import MapView, { LatLng, Marker, Polyline, Region } from "react-native-maps";
 import { createMissionStyle } from "./createMission.style";
 
 interface MissionScreenProps {
@@ -40,12 +40,13 @@ const CreateMissionScreen = (props: MissionScreenProps) => {
         setRegion(region);
     }
 
-    const onMapPress = () => {
-        console.log("yes");
+    const onMapPress = (coordinates: LatLng) => {
+        setMarker(true);
+        setUserCords(coordinates);
     }
 
     const [marker, setMarker] = useState(false);
-
+    const [userCords, setUserCords] = useState<LatLng>()
 
     const changeRegion = () => setRegion(initialRegion);
 
@@ -102,8 +103,8 @@ const CreateMissionScreen = (props: MissionScreenProps) => {
                 }) : setInitialRegion({
                     latitudeDelta: 0.09,
                     longitudeDelta: 0.04,
-                    latitude:  0,
-                    longitude: 0,
+                    latitude:   50.561349,
+                    longitude: 18.486832,
                 })
                 console.log("IMhere");
                 setRegion(initialRegion);
@@ -128,41 +129,52 @@ const CreateMissionScreen = (props: MissionScreenProps) => {
     return (
         <SafeAreaView style={createMissionStyle.content}>
             <HeaderComponent title="Create Mission" hasBackButton={true} navigation={props.navigation}/>
-
-                <MapView
-                    style={{flex: 1}}
-                    region={region}
-                    onRegionChangeComplete={onRegionChange}
-                    zoomEnabled={false}
-                    scrollEnabled={false}
-                    rotateEnabled={false}
-                    onPress={(event) => {console.log(event.nativeEvent.coordinate)}}
-                    >
-                    
-                                      
-                </MapView>
-            
-            {props.missionState.missionGetSuccess && mission?.missionPath !== undefined && mission.drone !== undefined? 
-             <Card>
-                <Card.Title title="Mission details"/>
-                <Card.Content>
-                    <Text>Date: {mission.missionStart.toLocaleString()}</Text> 
-                    <Text>Drone used: {mission.drone.droneName}</Text> 
-                    {
-                        mission.missionEnd !== undefined ? 
-                        <Text>Mission duration: { (mission?.missionEnd.getTime() - mission.missionStart.getTime() ) /60000 } min</Text> 
-                        : <Text>Mission duration: in place</Text> 
-                    }
-                    
-                </Card.Content>
-             </Card>
-            : null}
-            <FAB
-                onPress={changeRegion}
-                icon="map-marker"
-                style={createMissionStyle.fab}
-                color={"white"}
-            /> 
+                <View style={{flex: 1}}>
+                    <MapView
+                        style={{ height: "60%"}}
+                        region={region}
+                        onRegionChangeComplete={onRegionChange}
+                        zoomEnabled={false}
+                        scrollEnabled={false}
+                        rotateEnabled={false}
+                        zoomTapEnabled={false}
+                        zoomControlEnabled={false}
+                        pitchEnabled={false}
+                        scrollDuringRotateOrZoomEnabled={false}
+                        toolbarEnabled={false}
+                        onPress={(event) => {onMapPress(event.nativeEvent.coordinate)}}
+                        >
+                        <Marker
+                        description="marker"
+                        coordinate={{
+                            longitude: 18.486832,
+                            latitude: 50.561349
+                        }
+                        }
+                        tappable={false}
+                        pinColor={'red'}
+                        />
+                        {
+                            marker && userCords !== undefined ?
+                            <Marker
+                            description="userMarker"
+                            coordinate={userCords}
+                            pinColor={'red'}
+                            tappable={false}
+                            />
+                            : null
+                        }
+                                        
+                    </MapView>
+                    { marker && userCords !== undefined ?
+                     <View style={createMissionStyle.textContainer}>
+                            <Button mode="contained" >Start mission</Button>
+                        </View>
+                    : <View style={createMissionStyle.textContainer}>
+                    <Text > No descination selected </Text>
+                </View>}
+                </View>
+           
            
         </SafeAreaView>
     )

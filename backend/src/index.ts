@@ -19,6 +19,7 @@ import { getPilotMissions } from './routes/pilot/getPilotMissions';
 import { isMission } from './routes/pilot/isMission';
 import { getPilotBestDrone } from './routes/pilot/getPilotBestDrone';
 import { getDrone } from './routes/drone/getDrone';
+import { ping } from './routes/drone/ping';
 
 
 dotenv.config();
@@ -54,6 +55,9 @@ AppDataSource.initialize()
     app.use(getPilotMissions);
     app.use(isMission);
     app.use(getPilotBestDrone);
+    app.use(ping);
+
+    
     app.listen(port, () => {
       console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
     });

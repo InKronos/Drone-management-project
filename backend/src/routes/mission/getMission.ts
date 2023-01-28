@@ -12,9 +12,9 @@ router.post('/api/mission', async (req, res, next) => {
         
         const { id } = req.body;
         
- 
-        const [mission] = await findMissionById(id);
-        res.status(200).json( mission);
+        console.log(id);
+        const [mission] = await findMissionById({id:id});
+        res.status(200).json(mission);
        
       
     } 
