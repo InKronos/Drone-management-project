@@ -11,7 +11,7 @@ router.post('/api/drone/create', async (req, res, next) => {
         const drone = await createDrone(droneName);
         
     
-        res.status(200).json({
+        res.status(201).json({
         status: 'success',
         });
     } 

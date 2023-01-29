@@ -15,6 +15,9 @@ export class Mission extends BaseEntity {
 	})
 	missionEnd: Date;
 
+	@Column({nullable: true})
+	isAccepted: boolean;
+
 	@ManyToOne(() => Drone, (drone) => drone.missions)
 	drone: Drone;
 

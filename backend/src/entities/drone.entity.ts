@@ -17,13 +17,20 @@ export class Drone extends BaseEntity {
 	})
 	droneName: string;
 
-	@Column({
-		nullable: true
-	})
-	imageURL: string;
-
 	@Column()
 	isOnline: boolean;
+
+	@Column({nullable: true})
+	lastOnline: Date;
+
+	@Column({nullable: true})
+	veryfication: string;
+
+	@Column({type: "decimal", precision: 10, scale: 6, nullable: true})
+	longitude: number;
+
+	@Column({type: "decimal", precision: 10, scale: 6, nullable: true})
+	latitude: number;
 
 	@OneToMany(() => Mission, (mission) => mission.drone)
 	missions: Mission[];

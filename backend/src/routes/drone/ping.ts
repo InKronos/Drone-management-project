@@ -1,14 +1,14 @@
 import express from "express";
 import { Drone } from "../../entities/drone.entity";
-import { createDrone, findConnectedDrones, findDroneByName } from "../../services/drone.service";
+import { createDrone, findConnectedDrones, findDroneByName, updateDroneToOnline } from "../../services/drone.service";
 
 
 const router = express.Router();
 
 interface droneInfo {
     droneName: string,
-    longitude?: string,
-    latitude?: string
+    longitude: string,
+    latitude: string
 }
 
 router.post('/api/drone/ping', async (req, res, next) => {
@@ -24,6 +24,7 @@ router.post('/api/drone/ping', async (req, res, next) => {
                 });
         }
         else{
+            await updateDroneToOnline(drone, droneInfo.longitude, droneInfo.latitude);
             res.status(200).json({
                 status: 'success',
                 drone: drone

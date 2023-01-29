@@ -12,6 +12,28 @@ export const createDrone = async(
     ));
 };
 
+export const updateDroneToOnline = async (drone: Drone, longitude: string, latitude: string) => {
+    drone.isOnline = true;
+    drone.lastOnline = new Date();
+    drone.latitude = parseFloat(latitude);
+    drone.longitude = parseFloat(longitude);
+    return await AppDataSource.manager.save(drone);
+}
+
+export const updateDroneToOffline =async (drone: Drone) => {
+    drone.isOnline = false;
+    return await AppDataSource.manager.save(drone);
+}
+
+export const findOnlineDrones = async () => {
+    return await droneRepository.find({
+        where: {
+            isOnline: true
+        }
+    });
+}
+
+
 export const findDroneByName = async ({droneName} : {droneName: string}) => {
     return await droneRepository.findOneBy({droneName});
 };
