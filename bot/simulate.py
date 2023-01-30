@@ -44,7 +44,7 @@ def sendVerificationCode():
     if(recive.status_code != 200):
         return
     print("hello1")
-    time.sleep(5)
+    time.sleep(300)
     recive = requests.post(config['server_ip'] + "/api/drone/ping", 
         data={'droneName': config['droneName'],
             'longitude': location['long'],
