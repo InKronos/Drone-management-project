@@ -1,6 +1,7 @@
 import time
 import sys, os
 import requests
+from random import randint
 
 config = {}
 location = {}
@@ -25,8 +26,34 @@ def changeLocation(longitude, latitude):
     f.write(f'long="{latitude}"')
     f.close()
 
+def getVerificationCode():
+    return randint(100000, 999999)
 
-
+def sendVerificationCode():
+    time.sleep(5)
+    verifyCode = str(getVerificationCode())
+    print("Your verification code is: " + verifyCode)
+    recive = requests.post(config['server_ip'] + "/api/drone/ping", 
+        data={'droneName': config['droneName'],
+            'longitude': location['long'],
+            'latitude': location['lat'],
+            'verificationCode': verifyCode
+        })
+    print("hello")
+    print(recive.status_code)
+    if(recive.status_code != 200):
+        return
+    print("hello1")
+    time.sleep(5)
+    recive = requests.post(config['server_ip'] + "/api/drone/ping", 
+        data={'droneName': config['droneName'],
+            'longitude': location['long'],
+            'latitude': location['lat'],
+            'command': "deleteVerificationCode"
+        })
+    print("hello1")
+    
+    print("end")
 
 def main():
     defineConfig()
@@ -50,10 +77,13 @@ def main():
     while True:
         time.sleep(2.5)
         recive = requests.post(config['server_ip'] + "/api/drone/ping", 
-        data={'droneName': config['droneName'],
-            'longitude': location['long'],
-            'latitude': location['lat']
-        })
+            data={'droneName': config['droneName'],
+                'longitude': location['long'],
+                'latitude': location['lat']
+            })
+        dataFromServer = recive.json()
+        if(dataFromServer['quest'] == "verifycode"):
+            sendVerificationCode()
     #while (True):
     #    time.sleep(2.5)
 

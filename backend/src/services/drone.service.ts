@@ -22,6 +22,22 @@ export const updateDroneToOnline = async (drone: Drone, longitude: string, latit
 
 export const updateDroneToOffline =async (drone: Drone) => {
     drone.isOnline = false;
+    drone.verificationCode = null;
+    return await AppDataSource.manager.save(drone);
+}
+
+export const updateDroneToVerify =async (drone: Drone) => {
+    drone.verificationCode = "Verify";
+    return await AppDataSource.manager.save(drone);
+}
+
+export const updateDroneWithVerificationCode = async (drone: Drone, verificationCode: string) => {
+    drone.verificationCode = verificationCode;
+    return await AppDataSource.manager.save(drone);
+}
+
+export const deleteVerificationCode = async (drone: Drone) => {
+    drone.verificationCode = null;
     return await AppDataSource.manager.save(drone);
 }
 

@@ -23,8 +23,8 @@ export class Drone extends BaseEntity {
 	@Column({nullable: true})
 	lastOnline: Date;
 
-	@Column({nullable: true})
-	veryfication: string;
+	@Column({nullable: true, type: 'text'})
+	verificationCode!: string | null;
 
 	@Column({type: "decimal", precision: 10, scale: 6, nullable: true})
 	longitude: number;

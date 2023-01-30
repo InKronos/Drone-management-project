@@ -20,6 +20,7 @@ import { isMission } from './routes/pilot/isMission';
 import { getPilotBestDrone } from './routes/pilot/getPilotBestDrone';
 import { getDrone } from './routes/drone/getDrone';
 import { ping } from './routes/drone/ping';
+import { canGetVerify } from './routes/drone/canGetVerify';
 
 
 dotenv.config();
@@ -50,6 +51,7 @@ AppDataSource.initialize()
     app.use(isMission);
     app.use(getPilotBestDrone);
     app.use(ping);
+    app.use(canGetVerify);
 
 
     app.listen(port, () => {
