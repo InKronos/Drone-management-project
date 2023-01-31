@@ -8,15 +8,21 @@ const missionRepository = AppDataSource.getRepository(Mission);
 export const createMission = async(
     drone: Drone,
     longitude: number,
-    latitude: number
+    latitude: number,
+    longitudeDestination: number,
+    latitudeDestioation: number
 ) => {
     const missionPath = new MissionPath();
     missionPath.latitude = latitude;
     missionPath.longitude = longitude;
+    const missionDestination = new MissionPath();
+    missionDestination.latitude = latitudeDestioation;
+    missionDestination.longitude = longitudeDestination;
     await AppDataSource.manager.save(missionPath);
+    await AppDataSource.manager.save(missionDestination);
     const missionPaths = [missionPath];
     return (await AppDataSource.manager.save(
-        AppDataSource.manager.create(Mission, {drone: drone, missionStart: new Date(), missionPath: missionPaths}) as Mission
+        AppDataSource.manager.create(Mission, {drone: drone, missionStart: new Date(), missionPath: missionPaths, isAccepted: false, missionDestination: missionDestination}) as Mission
     ));
 };
 
@@ -69,9 +75,28 @@ export const updateMission = async(
         missionPath.latitude = latitude;
         missionPath.longitude = longitude;
         await AppDataSource.manager.save(missionPath);
+        if(mission.isAccepted === false)
+            mission.isAccepted = true;
         mission.missionPath.push(missionPath);
         console.log(isEnd);
         if(isEnd) 
             mission.missionEnd = new Date();
         return await AppDataSource.manager.save(mission);
+};
+
+export const findNoAcceptedMission = async(
+    drone: Drone
+) => {
+    return await missionRepository.find({
+        relations: {
+            drone: true,
+            missionDestination: true
+        },
+        where: { 
+            drone: {
+                id: drone.id
+        },
+        isAccepted: false
+    }
+    });
 };

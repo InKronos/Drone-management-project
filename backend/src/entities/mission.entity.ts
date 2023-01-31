@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Drone } from "./drone.entity";
 import { MissionPath } from "./missionPath.entity";
 
@@ -17,6 +17,10 @@ export class Mission extends BaseEntity {
 
 	@Column({nullable: true})
 	isAccepted: boolean;
+
+	@OneToOne(() => MissionPath)
+	@JoinColumn()
+	missionDestination: MissionPath;
 
 	@ManyToOne(() => Drone, (drone) => drone.missions)
 	drone: Drone;

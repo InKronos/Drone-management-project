@@ -1,4 +1,5 @@
 import express from "express";
+import { findNoAcceptedMission } from "../../services/mission.service";
 import { Drone } from "../../entities/drone.entity";
 import { createDrone, deleteVerificationCode, findConnectedDrones, findDroneByName, updateDroneToOnline, updateDroneWithVerificationCode } from "../../services/drone.service";
 
@@ -47,9 +48,22 @@ router.post('/api/drone/ping', async (req, res, next) => {
                     res.status(200).json({});
                 }
                 else{
-                    res.status(200).json({
-                        quest: 'wait'
-                        });
+                    const mission = await findNoAcceptedMission(drone);
+                    console.log(mission[0]);
+                    if(mission.length !== 0){
+                        res.status(200).json({
+                            quest: 'mission',
+                            missionId: mission[0].id,
+                            latitude: mission[0].missionDestination.latitude,
+                            longitude: mission[0].missionDestination.longitude
+                            });
+                    }
+                    else{
+                        res.status(200).json({
+                            quest: 'wait'
+                            });
+                    }
+                   
                 }
                 
             }   

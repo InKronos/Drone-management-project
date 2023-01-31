@@ -7,11 +7,11 @@ const router = express.Router();
 
 router.post('/api/mission/create', async (req, res, next) => {
     try{
-        const { droneName, longitude, latitude } = req.body;
-     
-        const drone = await findDroneById(droneName);
+        const { droneId, longitude, latitude, longitudeDestination, latitudeDestioation } = req.body;
+        console.log(req.body);
+        const drone = await findDroneById({id: droneId});
         if(drone){
-            const mission = await createMission(drone, longitude, latitude);
+            const mission = await createMission(drone, longitude, latitude, longitudeDestination, latitudeDestioation);
             res.status(200).json({
                 status: 'success',
                 id: mission.id

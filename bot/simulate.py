@@ -1,6 +1,7 @@
 import time
 import sys, os
 import requests
+import math
 from random import randint
 
 config = {}
@@ -43,17 +44,59 @@ def sendVerificationCode():
     print(recive.status_code)
     if(recive.status_code != 200):
         return
-    print("hello1")
     time.sleep(300)
     recive = requests.post(config['server_ip'] + "/api/drone/ping", 
         data={'droneName': config['droneName'],
             'longitude': location['long'],
             'latitude': location['lat'],
             'command': "deleteVerificationCode"
-        })
-    print("hello1")
-    
+        })    
     print("end")
+
+def midpoint(x1, y1, x2, y2):
+#Input values as degrees
+
+#Convert to radians
+    lat1 = math.radians(x1)
+    lon1 = math.radians(x2)
+    lat2 = math.radians(y1)
+    lon2 = math.radians(y2)
+
+
+    bx = math.cos(lat2) * math.cos(lon2 - lon1)
+    by = math.cos(lat2) * math.sin(lon2 - lon1)
+    lat3 = math.atan2(math.sin(lat1) + math.sin(lat2), \
+           math.sqrt((math.cos(lat1) + bx) * (math.cos(lat1) \
+           + bx) + by**2))
+    lon3 = lon1 + math.atan2(by, math.cos(lat1) + bx)
+
+    return [round(math.degrees(lat3), 2), round(math.degrees(lon3), 2)]
+
+def makeMission(longitude, latitude, missionId):
+    pointsArray = []
+    middlepoint = midpoint(latitude, longitude, float(location['lat']), float(location['long']))
+    pointsArray.append([latitude, longitude])
+    pointsArray.append(midpoint(latitude, longitude, middlepoint[0], middlepoint[1]))
+    pointsArray.append(middlepoint)
+    pointsArray.append(midpoint(middlepoint[0], middlepoint[1], float(location['lat']), float(location['long'])))
+    pointsArray.append([float(location['lat']), float(location['long'])])
+    print("Mission Started")
+    for i in range(1, 5):
+        time.sleep(5)
+        if(i == 4):
+            recive = requests.post(config['server_ip'] + "/api/mission/update", 
+            data={'id': missionId,
+                'longitude': pointsArray[i][1],
+                'latitude': pointsArray[i][0],
+                'isEnd': 1
+            })
+        else:
+            recive = requests.post(config['server_ip'] + "/api/mission/update", 
+            data={'id': missionId,
+                'longitude': pointsArray[i][1],
+                'latitude': pointsArray[i][0],
+            })
+
 
 def main():
     defineConfig()
@@ -84,6 +127,8 @@ def main():
         dataFromServer = recive.json()
         if(dataFromServer['quest'] == "verifycode"):
             sendVerificationCode()
+        if(dataFromServer['quest'] == "mission"):
+            makeMission(float(dataFromServer['longitude']), float(dataFromServer['latitude']), dataFromServer['missionId'])
     #while (True):
     #    time.sleep(2.5)
 
