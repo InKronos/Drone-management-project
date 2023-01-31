@@ -8,7 +8,7 @@ router.post('/api/drone', async (req, res, next) => {
     try{
         const { id } = req.body;
      
-        const drone = await findDroneById(id);
+        const drone = await findDroneById({id: id});
         
     
         res.status(200).json(drone);

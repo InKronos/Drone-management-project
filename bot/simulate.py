@@ -51,7 +51,7 @@ def sendVerificationCode():
         })    
     print("Verification code expired")
 
-def midpoint(x1, y1, x2, y2):
+def midpoint(x1, x2, y1, y2):
 #Input values as degrees
 
 #Convert to radians

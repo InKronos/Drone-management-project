@@ -4,23 +4,20 @@ import { BestDrone } from "../model/drone/BestDrone";
 import { Drone } from "../model/drone/Drone";
 
 class DroneService {
-    getDrones(result: string){
+    getConnectedDrones(userToken: string){
         return new Promise<Drone[]>((resolve, reject) => {
-            setTimeout(() => {
-                if(result === "positive"){
-                    const drones: Drone[] = [];
-                    let drone1: Drone = { droneName: "DJI 276", id: 20 };
-                    let drone2: Drone = { droneName: "Bayraktar", id: 21 };
-                    drones.push(drone1);
-                    drones.push(drone2);
+            axios.post('http://192.168.0.197:8000/api/drone/getconnected',{
+                    token: userToken
+                }).then(res => {
+                    console.log(res);
+                    const drones: Drone[] = res.data;
                     resolve(drones);
-                }
-                else{
-                    reject({message: "Connection problems"})
-                }
-
-            }, 3000)
-        })
+                })
+                .catch(err => {
+                    console.log(err.message);
+                    reject(err.message);
+                })
+         })
     }
 
     getMostUsedDrone(userToken: string){
@@ -33,7 +30,6 @@ class DroneService {
                 resolve(BestDrone)
             })
             .catch(err => {
-                console.log("dupa");
                 console.log(err.message);
                 reject(err.message);
             })
@@ -50,7 +46,6 @@ class DroneService {
                     resolve(drones);
                 })
                 .catch(err => {
-                    console.log("dupa");
                     console.log(err.message);
                     reject(err.message);
                 })
@@ -67,7 +62,6 @@ class DroneService {
                     resolve(drone);
                 })
                 .catch(err => {
-                    console.log("dupa");
                     console.log(err.message);
                     reject(err.message);
                 })

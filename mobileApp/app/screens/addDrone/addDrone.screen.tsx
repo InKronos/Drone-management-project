@@ -1,7 +1,7 @@
 import { bindActionCreators } from "@reduxjs/toolkit";
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
-import { Button, Card, List, Snackbar, Text } from "react-native-paper";
+import { Button, Card, Dialog, List, Portal, Snackbar, Text, TextInput } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { connect } from "react-redux";
 import { Drone } from "../../model/drone/Drone";
@@ -13,12 +13,16 @@ import { DroneState } from "../../store/drone/DroneState";
 import { hide, show } from "../../store/loading/loading.actions";
 import { LoadingState } from "../../store/loading/LoadingState";
 import { addDroneStyle } from "./addDrone.style";
+import { LoginState } from "../../store/login/LoginState";
+import { verificationForm } from "./addDrone.form";
+import { Formik } from "formik";
 
 interface addDroneScreenProps {
     navigation: any;
 
     loadingState: LoadingState;
     droneState: DroneState;
+    loginState: LoginState;
 
 
     getingDrones: Function;
@@ -35,12 +39,20 @@ const AddDroneScreen = (props: addDroneScreenProps) => {
 
     const connectToServer = () => props.getingDrones();
 
+    const [visible, setVisible] = React.useState(false);
+
+    const showDialog = () => setVisible(true);
+
+    const hideDialog = () => setVisible(false);
+
+    const [verificationFormFields, setverificationFormFields] = useState({verifyCode: ""});
+
     useEffect(() => {props.getingDrones()}, []);
 
     useEffect(() => {
         if(props.droneState.droneLoading){
             props.showLoading();
-            DroneService.getDrones("positive").then(drones => {
+            DroneService.getConnectedDrones(props.loginState.userToken).then(drones => {
                 setDronesArray(drones);
                 props.showDronesSuccess();
                 props.hideLoading();
@@ -62,8 +74,9 @@ const AddDroneScreen = (props: addDroneScreenProps) => {
                 { props.droneState.droneGetSuccess && dronesArray.map(drone =>
                      
                      <List.Item
-                     key={drone.name}
-                     title={drone.name}
+                     onPress={showDialog}
+                     key={drone.droneName}
+                     title={drone.droneName}
                      description="Online"
                      left={props => <List.Icon {...props} icon="drone" />}
                      right={props => <List.Icon {...props} icon="plus" />}
@@ -80,14 +93,51 @@ const AddDroneScreen = (props: addDroneScreenProps) => {
                         Reconnect</Button>
                 </View>
             : null }
+            <Portal>
+                <Dialog visible={visible} onDismiss={hideDialog}>
+                    <Dialog.Title>Verify</Dialog.Title>
+                    <Formik
+                        onSubmit={hideDialog}
+                     initialValues={{verifyCode: ""}}
+                     validationSchema={verificationForm}>
+                        {({handleSubmit, handleChange, errors, setFieldTouched, touched}) => (
+                            <>
+                    <Dialog.Content>
+                        <Text variant="bodyMedium">Type 6 digits verification code</Text>
+                        <TextInput 
+                        keyboardType='numeric'
+                        onChangeText={handleChange('verifyCode')}
+                        onFocus={() => setFieldTouched('verifyCode')}
+                        maxLength={6}
+                        />                      
+                        {
+                            touched.verifyCode && errors.verifyCode ?
+                            <Text style={{color: 'red'}}>
+                                {errors.verifyCode}
+                            </Text>
+                            : null
+                        }
+                            
+                    </Dialog.Content>
+                    <Dialog.Actions>
+                        <Button onPress={handleSubmit}>Add</Button>
+                    </Dialog.Actions>
+                    </>
+                        )}
+                        
+                    </Formik>
+                </Dialog>
+            </Portal>
             </View>
+            
         </SafeAreaView>
     )
 }
 
 const mapStateToProps = (store: AppState) => ({
     loadingState: store.loading,
-    droneState: store.drone
+    droneState: store.drone,
+    loginState: store.login
 })
 
 const mapDispatchToProps = (dispatch: any) => (
@@ -96,7 +146,8 @@ const mapDispatchToProps = (dispatch: any) => (
         showDronesSuccess: showDronesSuccess,
         showDronesFail: showDronesFail,
         hideLoading: hide,
-        showLoading: show
+        showLoading: show,
+        
     }, dispatch)
 )
 

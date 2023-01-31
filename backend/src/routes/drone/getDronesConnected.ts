@@ -23,9 +23,9 @@ router.post('/api/drone/getconnected', async (req, res, next) => {
               }
                 
             });
-            res.status(200).json({
+            res.status(200).json(
               notUserDrones
-            });
+            );
         }
         else{
             return res.status(400).json({

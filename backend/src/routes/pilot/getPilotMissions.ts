@@ -24,9 +24,13 @@ router.post('/api/pilot/missions', async (req, res, next) => {
                 console.log(missionsOfDrone);
                 return missionsOfDrone;
             })
-            const [missions] = await Promise.all(missionPromise);
-            console.log(missions);
-            res.status(200).json( missions );
+            const missions = await Promise.all(missionPromise);
+            const returnMission: Mission[] = [];
+            missions.forEach(mission => {
+                mission.forEach(mission => returnMission.push(mission));
+            });
+            
+            res.status(200).json( returnMission );
         }
         else{
             return res.status(400).json({

@@ -14,6 +14,7 @@ import { Mission } from "../../model/mission/Mission";
 import MissionService from "../../services/MissionService";
 import { missionStyle } from "./mission.style";
 import MapView, { Marker, Polyline, Region } from "react-native-maps";
+import { floor } from "react-native-reanimated";
 
 interface MissionScreenProps {
 
@@ -166,8 +167,8 @@ const MissionScreen = (props: MissionScreenProps) => {
                     <Text>Date: {mission.missionStart.toLocaleString()}</Text> 
                     <Text>Drone used: {mission.drone.droneName}</Text> 
                     {
-                        mission.missionEnd !== undefined && mission.missionEnd !== null ? 
-                        <Text>Mission duration: { (mission?.missionEnd.getTime() - mission.missionStart.getTime() ) /60000 } min</Text> 
+                        (mission.missionEnd !== undefined && mission.missionEnd !== null) ? 
+                        <Text>Mission duration: { Math.floor((new Date(mission.missionEnd).getTime() - new Date(mission.missionStart).getTime() ) /60000) } min</Text> 
                         : <Text>Mission duration: in place</Text> 
                     }
                     
