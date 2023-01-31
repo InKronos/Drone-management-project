@@ -67,6 +67,35 @@ class DroneService {
                 })
         })
     }
+
+    canVerify(id: number){
+        return new Promise<boolean>((resolve, reject) => {
+            axios.post('http://192.168.0.197:8000/api/drone/canverify',{
+                    id: id
+                }).then(res => {
+                    resolve(res.data);
+                })
+                .catch(err => {
+                    console.log(err.message);
+                    reject(err.message);
+                })
+        })
+    }
+
+    connectToDrone(userToken: string, id: number, verificationCode: number){
+        return new Promise<boolean>((resolve, reject) => {
+            axios.post('http://192.168.0.197:8000/api/drone/connect',{
+                    droneId: id,
+                    token: userToken,
+                    verificationCode: verificationCode
+                }).then(res => {
+                    resolve(true);
+                })
+                .catch(err => {
+                    reject(err.message);
+                })
+        })
+    }
 }
 
 export default new DroneService;

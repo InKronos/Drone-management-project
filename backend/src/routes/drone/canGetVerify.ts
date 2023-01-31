@@ -22,7 +22,7 @@ router.post('/api/drone/canverify', async (req, res, next) => {
             if(drone.verificationCode === null || drone.verificationCode === ""){
                 updateDroneToVerify(drone);
                 console.log("??")
-                res.status(200).json({});
+                res.status(200).json(true);
             }
             else{
                 res.status(400).json({

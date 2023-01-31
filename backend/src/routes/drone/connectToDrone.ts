@@ -23,9 +23,7 @@ router.post('/api/drone/connect', async (req, res, next) => {
                 if(drone.verificationCode === String(verificationCode)){
                     await addDroneToPilot(pliot[0], drone);
                     await deleteVerificationCode(drone);
-                    res.status(200).json({
-                        status: 'success',
-                    });
+                    res.status(200).json(true);
                 }
                 else{
                     res.status(400).json({

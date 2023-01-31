@@ -41,11 +41,46 @@ const AddDroneScreen = (props: addDroneScreenProps) => {
 
     const [visible, setVisible] = React.useState(false);
 
-    const showDialog = () => setVisible(true);
+    const [snackBarVisible, setSnacBarVisible] = React.useState(false);
+
+    const [snackBarError, setSnackBarError] = useState(false);
+
+    const [droneId, setDroneId] = useState<number>(0);
+
+    const showDialog = (droneId: number) => {
+        props.showLoading();
+        DroneService.canVerify(droneId).then(res => {
+            props.hideLoading();
+            setDroneId(droneId);
+            setVisible(true);
+        }).catch( error => {
+            console.log(error.message)
+            setSnacBarVisible(true);
+            props.hideLoading();
+        });
+
+        
+    }
+
+    const verify = (VerifyForm: {verifyCode: string}) => {
+        console.log(VerifyForm.verifyCode);
+        hideDialog();
+        props.showLoading();
+        DroneService.connectToDrone(props.loginState.userToken, droneId, parseInt(VerifyForm.verifyCode)).then(res => {
+            props.hideLoading();
+            setVisible(false);
+            props.navigation.navigate("showDrones");
+        }).catch( error => {
+            console.log(error.message)
+            setSnacBarVisible(true);
+            props.hideLoading();
+        });
+    }
 
     const hideDialog = () => setVisible(false);
 
-    const [verificationFormFields, setverificationFormFields] = useState({verifyCode: ""});
+
+    const [verificationFormFields, setverificationFormFields] = useState("");
 
     useEffect(() => {props.getingDrones()}, []);
 
@@ -74,7 +109,7 @@ const AddDroneScreen = (props: addDroneScreenProps) => {
                 { props.droneState.droneGetSuccess && dronesArray.map(drone =>
                      
                      <List.Item
-                     onPress={showDialog}
+                     onPress={() => showDialog(drone.id)}
                      key={drone.droneName}
                      title={drone.droneName}
                      description="Online"
@@ -93,11 +128,22 @@ const AddDroneScreen = (props: addDroneScreenProps) => {
                         Reconnect</Button>
                 </View>
             : null }
+
+         
+            <Snackbar
+                style={{position: "absolute", bottom: 5}}
+                duration={5000}
+                visible={snackBarVisible}
+                onDismiss={() => setSnacBarVisible(false)}>
+                {"error"}
+            </Snackbar>
+              
+    
             <Portal>
                 <Dialog visible={visible} onDismiss={hideDialog}>
                     <Dialog.Title>Verify</Dialog.Title>
                     <Formik
-                        onSubmit={hideDialog}
+                        onSubmit={verify}
                      initialValues={{verifyCode: ""}}
                      validationSchema={verificationForm}>
                         {({handleSubmit, handleChange, errors, setFieldTouched, touched}) => (
@@ -128,6 +174,7 @@ const AddDroneScreen = (props: addDroneScreenProps) => {
                     </Formik>
                 </Dialog>
             </Portal>
+            
             </View>
             
         </SafeAreaView>
