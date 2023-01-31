@@ -73,14 +73,14 @@ def midpoint(x1, x2, y1, y2):
 def makeMission(longitude, latitude, missionId):
     pointsArray = []
     middlepoint = midpoint(latitude, longitude, float(location['lat']), float(location['long']))
-    pointsArray.append([latitude, longitude])
-    pointsArray.append(midpoint(latitude, longitude, middlepoint[0], middlepoint[1]))
-    pointsArray.append(middlepoint)
-    pointsArray.append(midpoint(middlepoint[0], middlepoint[1], float(location['lat']), float(location['long'])))
     pointsArray.append([float(location['lat']), float(location['long'])])
+    pointsArray.append(midpoint(middlepoint[0], middlepoint[1], float(location['lat']), float(location['long'])))
+    pointsArray.append(middlepoint)
+    pointsArray.append(midpoint(latitude, longitude, middlepoint[0], middlepoint[1]))
+    pointsArray.append([latitude, longitude])
     print("Mission Started")
     for i in range(1, 5):
-        time.sleep(5)
+        time.sleep(20)
         if(i == 4):
             recive = requests.post(config['server_ip'] + "/api/mission/update", 
             data={'id': missionId,
@@ -94,6 +94,7 @@ def makeMission(longitude, latitude, missionId):
                 'longitude': pointsArray[i][1],
                 'latitude': pointsArray[i][0],
             })
+    changeLocation(longitude, latitude)
     print("Mission Finished")
 
 

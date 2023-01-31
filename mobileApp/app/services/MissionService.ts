@@ -31,6 +31,22 @@ class MissionService {
         })
     }
 
+    createMission(id: number, longitude: number, latitude: number, longitudeDestination: number, latitudeDestioation: number){
+        return new Promise<number>((resolve, reject) => {
+            axios.post('http://192.168.0.197:8000/api/mission/create',{
+                    droneId: id,
+                    longitude: longitude,
+                    latitude: latitude,
+                    longitudeDestination: longitudeDestination,
+                    latitudeDestioation: latitudeDestioation,
+                }).then(res => resolve(res.data.id))
+                .catch(err => {
+                    reject(err.message);
+                })
+            
+        })
+    }
+
     getMissionData(id: number, time?: number){
         return new Promise<Mission>((resolve, reject) => {
             axios.post('http://192.168.0.197:8000/api/mission',{

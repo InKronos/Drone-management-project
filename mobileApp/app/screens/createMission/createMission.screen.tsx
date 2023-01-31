@@ -65,64 +65,30 @@ const CreateMissionScreen = (props: MissionScreenProps) => {
     }, []);
 
 
-    useEffect(() => {
-        console.log("hello");
-        props.missionLoading();
-    }, []);
-
-    const [inMission, setInMission] = useState(1);
-
-    useEffect(() => {
-        if(inMission !== 1){
-            if(mission?.missionEnd === undefined){
-                setTimeout(() => {
-                    MissionService.getMissionData(props.route.params.id, inMission).then(mission => {
-                        setMission(mission);
-                        setInMission(inMission + 1);
-                    }).catch(error => {
-                        console.log(error);
-                    })
-                }, 3000)
-               
-            }
-        }
-
-    }, [inMission]);
-
-    useEffect(() => {
-        props.showLoading();
-        console.log(props.route.params.id);
-        if(props.missionState.missionLoading){
-            MissionService.getMissionData(props.route.params.id).then(mission => {
-                setMission(mission);
-                mission.missionPath !== undefined ? setInitialRegion({
-                    latitudeDelta: 0.09,
-                    longitudeDelta: 0.04,
-                    latitude:  mission.missionPath[0].latitude,
-                    longitude: mission.missionPath[0].longitude
-                }) : setInitialRegion({
-                    latitudeDelta: 0.09,
-                    longitudeDelta: 0.04,
-                    latitude:   50.561349,
-                    longitude: 18.486832,
-                })
-                console.log("IMhere");
-                setRegion(initialRegion);
-                props.showMissionSuccess();
-                props.hideLoading();
-                setRefreshing(false);
-                setInMission(2);
+    
+    const createMission = () => {
+        if(userCords !== undefined && userCords !== null){
+            MissionService.createMission(parseFloat(props.route.params.id), parseFloat(props.route.params.long), parseFloat(props.route.params.lat),
+            userCords?.longitude, userCords?.latitude).then(res => {
+                props.navigation.navigate("Mission", { id: res});
             }).catch(error => {
-                props.showMissionSuccess(error);
-                props.hideLoading();
-                setRefreshing(false);
+                console.log(error);
             })
         }
-        else{
-            props.hideLoading();
-            setRefreshing(false);
-        }
-    }, [props.missionState.missionLoading, refreshing]);
+          
+    }
+
+    
+
+    useEffect(() => {
+        setRegion({
+            latitudeDelta: 0.09,
+            longitudeDelta: 0.04,
+            latitude: parseFloat(props.route.params.lat),
+            longitude: parseFloat(props.route.params.long)
+        })
+
+    }, []);
 
    
 
@@ -147,8 +113,8 @@ const CreateMissionScreen = (props: MissionScreenProps) => {
                         <Marker
                         description="marker"
                         coordinate={{
-                            longitude: 18.486832,
-                            latitude: 50.561349
+                            longitude: parseFloat(props.route.params.long),
+                            latitude: parseFloat(props.route.params.lat)
                         }
                         }
                         tappable={false}
@@ -168,7 +134,7 @@ const CreateMissionScreen = (props: MissionScreenProps) => {
                     </MapView>
                     { marker && userCords !== undefined ?
                      <View style={createMissionStyle.textContainer}>
-                            <Button mode="contained" >Start mission</Button>
+                            <Button mode="contained" onPress={createMission}>Start mission</Button>
                         </View>
                     : <View style={createMissionStyle.textContainer}>
                     <Text > No descination selected </Text>

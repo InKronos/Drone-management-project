@@ -66,8 +66,11 @@ const MissionScreen = (props: MissionScreenProps) => {
     const [inMission, setInMission] = useState(1);
 
     useEffect(() => {
+        console.log(inMission);
         if(inMission !== 1){
-            if(mission?.missionEnd === undefined){
+            console.log(mission);
+            if(mission?.missionEnd === undefined || mission.missionEnd === null){
+                console.log("hello");
                 setTimeout(() => {
                     MissionService.getMissionData(props.route.params.id, inMission).then(mission => {
                         setMission(mission);
@@ -75,7 +78,7 @@ const MissionScreen = (props: MissionScreenProps) => {
                     }).catch(error => {
                         console.log(error);
                     })
-                }, 3000)
+                }, 1000)
                
             }
         }

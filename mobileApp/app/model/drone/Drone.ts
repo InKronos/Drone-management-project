@@ -2,7 +2,8 @@ export interface Drone {
     id: number;
     droneName: string;
     isOnline?: boolean;
-    imageURL?: string,
+    longitude: number;
+    latitude: number;
     numberOfBatteries?: number;
     numberOfChargedBatteries?: number;
     numberOfFinishedMissions?: number;

@@ -40,7 +40,7 @@ const DroneScreen = (props: droneScreenProps) => {
     const [refreshing, setRefreshing] = React.useState(false);
     const onRefresh = () => props.getingDrones();
 
-    const goToCreateMissionScreen = (id: number) => props.navigation.navigate("CreateMission", { id: id});
+    const goToCreateMissionScreen = (id: number, long: number, lat: number) => props.navigation.navigate("CreateMission", { id: id, long, lat});
 
 
     useEffect(() => {
@@ -96,7 +96,7 @@ const DroneScreen = (props: droneScreenProps) => {
                         <Text>Numbers of batteries fully charged: 1/2{drone?.numberOfChargedBatteries}{drone?.numberOfBatteries}</Text>
                         <Text>{drone?.isInMission ? "In mission" : "On ground"}</Text>
                     </View>
-                    <Button mode="contained" style={droneStyle.button} onPress={() => goToCreateMissionScreen(drone.id)}>Create mission</Button>
+                    <Button mode="contained" style={droneStyle.button} onPress={() => goToCreateMissionScreen(drone.id, drone.longitude, drone.latitude)}>Create mission</Button>
                 </View>
                 </>
             : null}
