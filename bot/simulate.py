@@ -40,8 +40,6 @@ def sendVerificationCode():
             'latitude': location['lat'],
             'verificationCode': verifyCode
         })
-    print("hello")
-    print(recive.status_code)
     if(recive.status_code != 200):
         return
     time.sleep(300)
@@ -51,7 +49,7 @@ def sendVerificationCode():
             'latitude': location['lat'],
             'command': "deleteVerificationCode"
         })    
-    print("end")
+    print("Verification code expired")
 
 def midpoint(x1, y1, x2, y2):
 #Input values as degrees
@@ -96,6 +94,7 @@ def makeMission(longitude, latitude, missionId):
                 'longitude': pointsArray[i][1],
                 'latitude': pointsArray[i][0],
             })
+    print("Mission Finished")
 
 
 def main():
