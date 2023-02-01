@@ -79,7 +79,7 @@ const LoginScreen = (props: LoginScreenProps) => {
                                         onFocus={() => setFieldTouched('email')}/>
                                     {
                                         touched.email && errors.email ?
-                                        <Text style={{color: 'white', backgroundColor: "red"}}>
+                                        <Text style={{color: 'red'}}>
                                             {errors.email}
                                         </Text>
                                         : null
@@ -92,7 +92,7 @@ const LoginScreen = (props: LoginScreenProps) => {
                                         onFocus={() => setFieldTouched('password')}/>
                                     {
                                         touched.password && errors.password ?
-                                        <Text style={{color: 'white', backgroundColor: "red"}}>
+                                        <Text style={{color: 'red'}}>
                                             {errors.password}
                                         </Text>
                                         : null

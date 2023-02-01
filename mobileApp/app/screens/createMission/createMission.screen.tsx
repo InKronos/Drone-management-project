@@ -14,6 +14,7 @@ import { Mission } from "../../model/mission/Mission";
 import MissionService from "../../services/MissionService";
 import MapView, { LatLng, Marker, Polyline, Region } from "react-native-maps";
 import { createMissionStyle } from "./createMission.style";
+import { useIsFocused } from "@react-navigation/native";
 
 interface MissionScreenProps {
 
@@ -78,17 +79,18 @@ const CreateMissionScreen = (props: MissionScreenProps) => {
           
     }
 
-    
+    const isFocused = useIsFocused();
 
     useEffect(() => {
-        setRegion({
+        isFocused && setRegion({
             latitudeDelta: 0.09,
             longitudeDelta: 0.04,
             latitude: parseFloat(props.route.params.lat),
             longitude: parseFloat(props.route.params.long)
-        })
+        });
+        isFocused && setMarker(false);
 
-    }, []);
+    }, [isFocused]);
 
    
 

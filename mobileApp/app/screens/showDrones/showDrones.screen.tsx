@@ -14,6 +14,7 @@ import { hide, show } from "../../store/loading/loading.actions";
 import { LoadingState } from "../../store/loading/LoadingState";
 import { showDronesStyle } from "./showDrones.style";
 import { LoginState } from "../../store/login/LoginState";
+import { useIsFocused } from "@react-navigation/native";
 
 interface showDronesScreenProps {
 
@@ -49,11 +50,10 @@ const ShowDronesScreen = (props: showDronesScreenProps) => {
         setRefreshing(true);
     }, []);
 
-
+    const isFocused = useIsFocused();
     useEffect(() => {
-        console.log("123");
-        props.getingDrones();
-    }, []);
+        isFocused && props.getingDrones()
+    }, [isFocused]);
 
     useEffect(() => {
         if(refreshing){

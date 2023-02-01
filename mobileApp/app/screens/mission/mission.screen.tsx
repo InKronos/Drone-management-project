@@ -169,7 +169,7 @@ const MissionScreen = (props: MissionScreenProps) => {
              <Card>
                 <Card.Title title="Mission details"/>
                 <Card.Content>
-                    <Text>Date: {mission.missionStart.toLocaleString()}</Text> 
+                    <Text>Date: {new Date(mission.missionStart).toLocaleDateString('en-uk', {  year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second:'2-digit' })}</Text> 
                     <Text>Drone used: {mission.drone.droneName}</Text> 
                     {
                         (mission.missionEnd !== undefined && mission.missionEnd !== null) ? 

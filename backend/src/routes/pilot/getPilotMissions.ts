@@ -29,8 +29,8 @@ router.post('/api/pilot/missions', async (req, res, next) => {
             missions.forEach(mission => {
                 mission.forEach(mission => returnMission.push(mission));
             });
-            
-            res.status(200).json( returnMission );
+            returnMission.sort()
+            res.status(200).json( returnMission.sort((a, b) => b.missionStart.getTime() - a.missionStart.getTime() ));
         }
         else{
             return res.status(400).json({

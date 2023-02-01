@@ -80,7 +80,7 @@ const RegisterScreen = (props: RegisterScreenProps) => {
                                 onFocus={() => setFieldTouched('name')}/>
                             {
                                 touched.name && errors.name ?
-                                <Text style={{color: 'white', backgroundColor: "red"}}>
+                                <Text style={{color: 'red'}}>
                                     {errors.name}
                                 </Text>
                                 : null
@@ -92,7 +92,7 @@ const RegisterScreen = (props: RegisterScreenProps) => {
                                 onFocus={() => setFieldTouched('email')}/>
                             {
                                 touched.email && errors.email ?
-                                <Text style={{color: 'white', backgroundColor: "red"}}>
+                                <Text style={{color: 'red'}}>
                                     {errors.email}
                                 </Text>
                                 : null
@@ -112,7 +112,7 @@ const RegisterScreen = (props: RegisterScreenProps) => {
                                 onFocus={() => setFieldTouched('password')}/>
                             {
                                 touched.password && errors.password ?
-                                <Text style={{color: 'white', backgroundColor: "red"}}>
+                                <Text style={{color: 'red'}}>
                                     {errors.password}
                                 </Text>
                                 : null
@@ -132,7 +132,7 @@ const RegisterScreen = (props: RegisterScreenProps) => {
                                 onFocus={() => setFieldTouched('confirm_password')}/>
                             {
                                 touched.confirm_password && errors.confirm_password ?
-                                <Text style={{color: 'white', backgroundColor: "red"}}>
+                                <Text style={{color: 'red'}}>
                                     {errors.confirm_password}
                                 </Text>
                                 : null
@@ -143,7 +143,7 @@ const RegisterScreen = (props: RegisterScreenProps) => {
                                 onFocus={() => setFieldTouched('phone_number')}/>
                             {
                                 touched.phone_number && errors.phone_number ?
-                                <Text style={{color: 'white', backgroundColor: "red"}}>
+                                <Text style={{color: 'red'}}>
                                     {errors.phone_number}
                                 </Text>
                                 : null

@@ -90,7 +90,7 @@ const ShowMissionsScreen = (props: showDronesScreenProps) => {
                      
                      <List.Item
                      key={mission.id}
-                     title={"Mission: "+ mission.missionStart.toLocaleString()}
+                     title={"Mission: "+ new Date(mission.missionStart).toLocaleDateString('en-uk', {  year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second:'2-digit' })}
                      onPress={() => goToMissionScreen(mission.id)}
                      description={
                         <>

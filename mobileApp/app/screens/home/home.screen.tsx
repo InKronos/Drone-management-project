@@ -1,3 +1,4 @@
+import { useIsFocused } from "@react-navigation/native";
 import { bindActionCreators } from "@reduxjs/toolkit";
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
@@ -45,8 +46,8 @@ const HomeScreen = (props: homeScreenProps) => {
     const [mostUsedDrone, setMostUsedDrone] = useState<BestDrone>();
     const [isMisson, setIsMission] = useState<boolean>(false);
     const [isDrone, setIsDrone] = useState<boolean>(false);
-
-    useEffect(() => {props.getingDrones()}, []);
+    const isFocused = useIsFocused();
+    useEffect(() => {isFocused && props.getingDrones()}, [isFocused]);
 
     useEffect(() => {
         if(props.droneState.droneLoading){

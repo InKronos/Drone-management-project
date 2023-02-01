@@ -42,7 +42,7 @@ def sendVerificationCode():
         })
     if(recive.status_code != 200):
         return
-    time.sleep(300)
+    time.sleep(15)
     recive = requests.post(config['server_ip'] + "/api/drone/ping", 
         data={'droneName': config['droneName'],
             'longitude': location['long'],
@@ -80,7 +80,7 @@ def makeMission(longitude, latitude, missionId):
     pointsArray.append([latitude, longitude])
     print("Mission Started")
     for i in range(1, 5):
-        time.sleep(20)
+        time.sleep(10)
         if(i == 4):
             recive = requests.post(config['server_ip'] + "/api/mission/update", 
             data={'id': missionId,

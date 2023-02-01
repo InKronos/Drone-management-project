@@ -15,6 +15,7 @@ import { LoadingState } from "../../store/loading/LoadingState";
 import { droneStyle } from "./drone.style";
 import { LoginState } from "../../store/login/LoginState";
 import loadingComponent from "../../components/loading/loading.component";
+import { useIsFocused } from "@react-navigation/native";
 
 interface droneScreenProps {
     navigation: any;
@@ -58,13 +59,13 @@ const DroneScreen = (props: droneScreenProps) => {
             props.hideLoading();
         })
     }
+    const isFocused = useIsFocused();
+    useEffect(() => {
+        isFocused && props.getingDrones();
+    }, [isFocused]);
 
     useEffect(() => {
-        props.showLoading();
-        props.getingDrones();
-    }, []);
-
-    useEffect(() => {
+        props.showLoading()
         if(props.droneState.droneLoading){
             console.log(props.route);
             DroneService.getDrone(props.route.params.id).then(drone => {
@@ -108,7 +109,7 @@ const DroneScreen = (props: droneScreenProps) => {
                     </View>
                     <View style={droneStyle.textContainer}>
                         <Text style={droneStyle.nameOfDrone}>{drone?.droneName}</Text>
-                        <Text>Missions complited: 1{drone?.numberOfFinishedMissions}</Text>
+                        <Text>Missions complited: {drone?.numberOfFinishedMissions}</Text>
                         <Text>Numbers of batteries fully charged: 1/2{drone?.numberOfChargedBatteries}{drone?.numberOfBatteries}</Text>
                         <Button mode="outlined" style={droneStyle.button} onPress={() => goToCreateMissionScreen(drone.id, drone.longitude, drone.latitude)}>Change number of batteries</Button>
                         <Button mode="contained" style={droneStyle.errorButton} onPress={disconnectDrone}>Disconnet</Button>
