@@ -21,6 +21,12 @@ export const findPilotByIdWithDrones = async({id} : {id: number}) => {
     });
 };
 
+export const disconnectDrone = async(pilot: Pilot, droneToDisconnect: Drone) => {
+    const newdrones = pilot.drones.filter((drone) => drone.id !== droneToDisconnect.id);
+    pilot.drones = newdrones;
+    return await AppDataSource.manager.save(pilot);
+}
+
 
 export const createPilot = async(
     name: string,
@@ -28,7 +34,6 @@ export const createPilot = async(
     password: string,
     phone_number: string
 ) => {
-    console.log(name);
     return (await AppDataSource.manager.save(
         AppDataSource.manager.create(Pilot, {full_name: name, email: email, password: password, phone_number: phone_number}) as Pilot
     ));

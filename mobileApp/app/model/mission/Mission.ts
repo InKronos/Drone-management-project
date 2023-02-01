@@ -7,5 +7,5 @@ export interface Mission {
     missionStart: Date;
     missionEnd?: Date | null;
     drone?: Drone;
-    missionPath?: MissionPath[] | MissionPathWhithoutId[];
+    missionPath: MissionPath[] | MissionPathWhithoutId[];
 }

@@ -2,7 +2,7 @@ import { bindActionCreators } from "@reduxjs/toolkit";
 import { Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import { Alert, SafeAreaView, View } from "react-native";
-import { Button, Card, Snackbar, Text, TextInput } from "react-native-paper";
+import { Button, Card, FAB, Snackbar, Text, TextInput } from "react-native-paper";
 import { connect } from "react-redux";
 import AuthService from "../../services/AuthService";
 import { AppState } from "../../store/AppState";
@@ -37,10 +37,12 @@ const LoginScreen = (props: LoginScreenProps) => {
             AuthService.login(userLogin.email, userLogin.password).then(res => {
                 console.log(res.data.access_token);
                 setToken(res.data.access_token);
-                props.loginSuccess(token);
+                props.loginSuccess(res.data.access_token);
+                console.log(">??")
                 console.log(props.loginState.userToken);
                 props.navigation.navigate("Home");
                 props.hideLoading();
+                
             })
             .catch(error => {
                 props.loginFail(error.response.data.message);
@@ -56,12 +58,7 @@ const LoginScreen = (props: LoginScreenProps) => {
         props.login();
     }
     const register = () => props.navigation.navigate("Register");
-    const forgotPassword = () => {
-        props.showLoading();
-        setTimeout(() => {
-            props.hideLoading()
-        }, 3000)
-    }
+ 
 
     return (
         <SafeAreaView style={loginStyle.content}>
@@ -100,11 +97,7 @@ const LoginScreen = (props: LoginScreenProps) => {
                                         </Text>
                                         : null
                                     }
-                                    <Button 
-                                        style={loginStyle.cardButton}
-                                        onPress={forgotPassword}>
-                                        Forget password
-                                    </Button>
+
                                     <Button 
                                         style={loginStyle.cardButton} 
                                         mode="contained"
@@ -132,6 +125,12 @@ const LoginScreen = (props: LoginScreenProps) => {
                 </Snackbar>
                 : null
             }
+            <FAB
+                onPress={() => {}}
+                icon="help"
+                style={loginStyle.fab}
+                color={"white"}
+            /> 
         </SafeAreaView>
     )
 }

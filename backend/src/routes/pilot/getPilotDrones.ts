@@ -2,6 +2,7 @@ import express from "express";
 import { addDroneToPilot, findPilotById, findPilotByIdWithDrones } from "../../services/pilot.service";
 import { verifyJwt } from "../../utils/jwt";
 import { createDrone, findDroneById } from "../../services/drone.service";
+import { disconnect } from "../../utils/disconnect";
 
 
 const router = express.Router();
@@ -16,6 +17,7 @@ router.post('/api/pilot/drones', async (req, res, next) => {
         if(sub !== undefined && sub !== null){
             let id = parseInt(sub);
             const pliot = await findPilotByIdWithDrones({id});
+            disconnect(pliot[0].drones);
             res.status(200).json(
             pliot[0].drones
             );

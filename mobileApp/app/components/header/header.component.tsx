@@ -33,8 +33,15 @@ export const HeaderComponent = (props: HeaderComponentParams) => {
                             onPress={openMenu}/>
                     }>
                     <Menu.Item
+                        title="Delete profile"
+                        onPress={()=>{}}/>
+                    <Menu.Item
+                        title="Edit profile"
+                        onPress={()=>{}}/>
+                    <Menu.Item
                         title="Logout"
                         onPress={logout}/>
+                       
                 </Menu>
             }
             

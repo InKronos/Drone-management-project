@@ -21,6 +21,7 @@ import { getPilotBestDrone } from './routes/pilot/getPilotBestDrone';
 import { getDrone } from './routes/drone/getDrone';
 import { ping } from './routes/drone/ping';
 import { canGetVerify } from './routes/drone/canGetVerify';
+import { disconnectFromPilot } from './routes/drone/disconnectFromPilot';
 
 
 dotenv.config();
@@ -52,6 +53,7 @@ AppDataSource.initialize()
     app.use(getPilotBestDrone);
     app.use(ping);
     app.use(canGetVerify);
+    app.use(disconnectFromPilot);
 
 
     app.listen(port, () => {

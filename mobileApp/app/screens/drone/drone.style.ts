@@ -30,7 +30,7 @@ export const droneStyle = StyleSheet.create({
     offline: {
         backgroundColor: theme.colors.error,
         position: "absolute",
-        bottom: 110,
+        bottom: 28,
         left: 50,
         padding: 4,
         height: 20,
@@ -50,5 +50,9 @@ export const droneStyle = StyleSheet.create({
     },
     button:{
         marginTop: 20
+    },
+    errorButton:{
+        marginTop: 20,
+        backgroundColor: theme.colors.error
     }
 })

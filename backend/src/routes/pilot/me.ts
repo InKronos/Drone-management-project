@@ -2,7 +2,6 @@ import express from "express";
 import { verifyJwt } from "../../utils/jwt";
 import { Pilot } from "../../entities/pilot.entity";
 import { findPilotByEmail, findPilotById, signTokens } from "../../services/pilot.service";
-import AppError from "../../utils/appError";
 
 
 const router = express.Router();

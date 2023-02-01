@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { theme } from "../../../App.style";
 
 export const homeStyle = StyleSheet.create({
     content: {
@@ -18,5 +19,15 @@ export const homeStyle = StyleSheet.create({
         marginRight: "20%",
         marginLeft: "20%",
         marginBottom: 2
+    },
+    fab: {
+    
+        position: "absolute",
+        margin: 5,
+        right: 0,
+        bottom: 0,
+        borderRadius: 100,
+        backgroundColor: theme.colors.primary,
+        color: "white"
     }
 })

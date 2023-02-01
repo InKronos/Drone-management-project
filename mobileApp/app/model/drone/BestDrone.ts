@@ -1,4 +1,4 @@
 export interface BestDrone {
-    missionCount: number,
-    droneName: string
+    missionCount: number | null,
+    droneName: string | null
 }

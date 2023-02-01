@@ -49,7 +49,7 @@ const MissionScreen = (props: MissionScreenProps) => {
 
     const [refreshing, setRefreshing] = React.useState(false);
 
-    const [region, setRegion] = useState<Region | undefined>();
+    const [region, setRegion] = useState<Region>();
 
     const [initialRegion, setInitialRegion] = useState<Region>();
 
@@ -60,8 +60,10 @@ const MissionScreen = (props: MissionScreenProps) => {
 
     useEffect(() => {
         console.log("hello");
+        console.log(region);
         props.missionLoading();
     }, []);
+
 
     const [inMission, setInMission] = useState(1);
 
@@ -78,7 +80,7 @@ const MissionScreen = (props: MissionScreenProps) => {
                     }).catch(error => {
                         console.log(error);
                     })
-                }, 1000)
+                }, 2000)
                
             }
         }
@@ -91,25 +93,24 @@ const MissionScreen = (props: MissionScreenProps) => {
         if(props.missionState.missionLoading){
             MissionService.getMissionData(props.route.params.id).then(mission => {
                 setMission(mission);
-                mission.missionPath !== undefined ? setInitialRegion({
+                setInitialRegion({
                     latitudeDelta: 0.09,
                     longitudeDelta: 0.04,
                     latitude:  mission.missionPath[0].latitude,
                     longitude: mission.missionPath[0].longitude
-                }) : setInitialRegion({
-                    latitudeDelta: 0.09,
-                    longitudeDelta: 0.04,
-                    latitude:  0,
-                    longitude: 0,
-                })
+                });
                 console.log(mission);
                 setRegion(initialRegion);
+                console.log("region");
+                console.log(region);
                 props.showMissionSuccess();
                 props.hideLoading();
+
+                changeRegion();
                 setRefreshing(false);
                 setInMission(2);
             }).catch(error => {
-                props.showMissionSuccess(error);
+                props.showMissionFail(error);
                 props.hideLoading();
                 setRefreshing(false);
             })
@@ -126,10 +127,11 @@ const MissionScreen = (props: MissionScreenProps) => {
         <SafeAreaView style={missionStyle.content}>
             <HeaderComponent title="Mission" hasBackButton={true} navigation={props.navigation}/>
             {
-                props.missionState.missionGetSuccess && mission?.missionPath !== undefined ? 
+                (props.missionState.missionGetSuccess && mission?.missionPath !== undefined) ? 
                 <MapView
                     style={{flex: 1}}
                     region={region}
+                    initialRegion={initialRegion}
                     onRegionChangeComplete={onRegionChange}>
                     <Polyline
                         coordinates={

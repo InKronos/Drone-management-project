@@ -17,7 +17,6 @@ interface droneInfo {
 router.post('/api/drone/ping', async (req, res, next) => {
     try{     
         const droneInfo: droneInfo = req.body;
-        console.log(droneInfo.droneName);
         const drone = await findDroneByName({droneName: droneInfo.droneName})
         //console.log(drone);
         if(drone === null){
@@ -49,7 +48,6 @@ router.post('/api/drone/ping', async (req, res, next) => {
                 }
                 else{
                     const mission = await findNoAcceptedMission(drone);
-                    console.log(mission[0]);
                     if(mission.length !== 0){
                         res.status(200).json({
                             quest: 'mission',

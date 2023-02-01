@@ -1,4 +1,5 @@
 import express from "express";
+import { disconnectSingleDrone } from "../../utils/disconnect";
 import { findDroneById } from "../../services/drone.service";
 
 
@@ -9,7 +10,7 @@ router.post('/api/drone', async (req, res, next) => {
         const { id } = req.body;
      
         const drone = await findDroneById({id: id});
-        
+        if(drone !== null) await disconnectSingleDrone(drone);
     
         res.status(200).json(drone);
     } 

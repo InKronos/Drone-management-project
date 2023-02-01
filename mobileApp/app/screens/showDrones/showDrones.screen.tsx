@@ -47,12 +47,11 @@ const ShowDronesScreen = (props: showDronesScreenProps) => {
     const [refreshing, setRefreshing] = React.useState(false);
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
-        props.getingDrones();
     }, []);
 
 
     useEffect(() => {
-        props.showLoading();
+        console.log("123");
         props.getingDrones();
     }, []);
 
@@ -61,19 +60,30 @@ const ShowDronesScreen = (props: showDronesScreenProps) => {
             DroneService.getUserDrones(props.loginState.userToken).then(drones => {
                 setDronesArray(drones);
                 props.showDronesSuccess();
-                props.hideLoading();
                 setRefreshing(false);
             }).catch(error => {
                 props.showDronesFail(error);
-                props.hideLoading();
                 setRefreshing(false);
             })
         }
         else{
-            props.hideLoading();
             setRefreshing(false);
         }
-    }, [props.droneState.droneLoading, refreshing]);
+    }, [refreshing]);
+
+    useEffect(() => {
+        props.showLoading();
+        DroneService.getUserDrones(props.loginState.userToken).then(drones => {
+            setDronesArray(drones);
+            props.showDronesSuccess();
+            props.hideLoading();
+        }).catch(error => {
+            props.showDronesFail(error);
+            props.hideLoading();
+        })
+        
+    
+    }, [props.droneState.droneLoading]);
 
    
 
@@ -104,7 +114,7 @@ const ShowDronesScreen = (props: showDronesScreenProps) => {
                      />
                         
                 )}
-                { (props.droneState.error || dronesArray.length === 0) && !props.droneState.droneLoading ? 
+                { (props.droneState.error || dronesArray.length === 0) ? 
                 <View style={showDronesStyle.content}>
                     <Text style={showDronesStyle.textContainer}>No drones found or connection error</Text>
                     <Button

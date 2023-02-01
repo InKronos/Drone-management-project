@@ -1,7 +1,7 @@
 import { bindActionCreators } from "@reduxjs/toolkit";
 import React, { useEffect, useState } from "react";
 import { RefreshControl, ScrollView, View } from "react-native";
-import { Avatar, Button, Card, List, Snackbar, Text } from "react-native-paper";
+import { Avatar, Button, Card, IconButton, List, Snackbar, Text } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { connect } from "react-redux";
 import { Drone } from "../../model/drone/Drone";
@@ -13,6 +13,8 @@ import { DroneState } from "../../store/drone/DroneState";
 import { hide, show } from "../../store/loading/loading.actions";
 import { LoadingState } from "../../store/loading/LoadingState";
 import { droneStyle } from "./drone.style";
+import { LoginState } from "../../store/login/LoginState";
+import loadingComponent from "../../components/loading/loading.component";
 
 interface droneScreenProps {
     navigation: any;
@@ -20,6 +22,7 @@ interface droneScreenProps {
 
     loadingState: LoadingState;
     droneState: DroneState;
+    loginState: LoginState;
 
 
     getingDrones: Function;
@@ -38,10 +41,23 @@ const DroneScreen = (props: droneScreenProps) => {
     const [drone, setDrone] = useState<Drone>();
 
     const [refreshing, setRefreshing] = React.useState(false);
+
+    const [snackBar, setSnacBar] = useState(false);
     const onRefresh = () => props.getingDrones();
 
     const goToCreateMissionScreen = (id: number, long: number, lat: number) => props.navigation.navigate("CreateMission", { id: id, long, lat});
 
+
+    const disconnectDrone = () => {
+        props.showLoading();
+        DroneService.disconnectDrone(props.route.params.id, props.loginState.userToken).then(() => {
+            props.navigation.navigate("showDrones");
+            props.hideLoading();
+            setSnacBar(true);
+        }).catch(error => {
+            props.hideLoading();
+        })
+    }
 
     useEffect(() => {
         props.showLoading();
@@ -94,20 +110,34 @@ const DroneScreen = (props: droneScreenProps) => {
                         <Text style={droneStyle.nameOfDrone}>{drone?.droneName}</Text>
                         <Text>Missions complited: 1{drone?.numberOfFinishedMissions}</Text>
                         <Text>Numbers of batteries fully charged: 1/2{drone?.numberOfChargedBatteries}{drone?.numberOfBatteries}</Text>
-                        <Text>{drone?.isInMission ? "In mission" : "On ground"}</Text>
+                        <Button mode="outlined" style={droneStyle.button} onPress={() => goToCreateMissionScreen(drone.id, drone.longitude, drone.latitude)}>Change number of batteries</Button>
+                        <Button mode="contained" style={droneStyle.errorButton} onPress={disconnectDrone}>Disconnet</Button>
+
                     </View>
-                    <Button mode="contained" style={droneStyle.button} onPress={() => goToCreateMissionScreen(drone.id, drone.longitude, drone.latitude)}>Create mission</Button>
+                    {
+                        drone.isOnline ? 
+                        <Button mode="contained" style={droneStyle.button} onPress={() => goToCreateMissionScreen(drone.id, drone.longitude, drone.latitude)}>Create mission</Button>
+                        : null
+                    }
                 </View>
                 </>
             : null}
+            <Snackbar
+                    duration={5000}
+                    visible={snackBar}
+                    onDismiss={()=>setSnacBar(false)}>
+                    {"Error"}
+            </Snackbar>
             </ScrollView>
+            
         </SafeAreaView>
     )
 }
 
 const mapStateToProps = (store: AppState) => ({
     loadingState: store.loading,
-    droneState: store.drone
+    droneState: store.drone,
+    loginState: store.login
 })
 
 const mapDispatchToProps = (dispatch: any) => (

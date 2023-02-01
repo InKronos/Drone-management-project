@@ -26,8 +26,12 @@ class DroneService {
                 token: userToken
             }).then(res => {
                 console.log(res);
-                const BestDrone = {missionCount: res.data.missionsCount, droneName: res.data.droneName}
-                resolve(BestDrone)
+                if(res.data === false)  resolve({missionCount: null, droneName: null});
+                else{
+                    const BestDrone = {missionCount: res.data.missionsCount, droneName: res.data.droneName};
+                    resolve(BestDrone);
+                }
+                
             })
             .catch(err => {
                 console.log(err.message);
@@ -67,6 +71,23 @@ class DroneService {
                 })
         })
     }
+
+    disconnectDrone(id: number, userToken: string){
+        return new Promise<boolean>((resolve, reject) => {
+            axios.post('http://192.168.0.197:8000/api/drone/disconnect',{
+                    token: userToken,
+                    droneId: id
+                }).then(res => {
+                    console.log(res);
+                    resolve(true);
+                })
+                .catch(err => {
+                    console.log(err.message);
+                    reject(err.message);
+                })
+        })
+    }
+
 
     canVerify(id: number){
         return new Promise<boolean>((resolve, reject) => {

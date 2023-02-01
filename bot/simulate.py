@@ -24,7 +24,7 @@ def changeLocation(longitude, latitude):
     location['lat'] = latitude
     f = open(os.path.join(sys.path[0],"location.txt"), "w")
     f.write(f'long="{longitude}"\n')
-    f.write(f'long="{latitude}"')
+    f.write(f'lat="{latitude}"')
     f.close()
 
 def getVerificationCode():

@@ -19,14 +19,20 @@ router.post('/api/pilot/bestdrone', async (req, res, next) => {
             let id = parseInt(sub);
             const pliot = await findPilotByIdWithDrones({id});
             console.log(pliot[0].drones);
-            const missionPromise = pliot[0].drones.map(async drone => {
-                const [missions, numberCount] = await findCountMissionByDrone(drone);
-                return {missionsCount: numberCount, droneName: drone.droneName};
-            })
-            const missions = await Promise.all(missionPromise);
-            const bestDrone = missions.sort((firstItem, secondItem) => secondItem.missionsCount - firstItem.missionsCount)
-            console.log(missions);
-            res.status(200).json(missions[0]);
+            if(pliot[0].drones.length === 0){
+                res.status(200).json(false);
+            }
+            else{
+                const missionPromise = pliot[0].drones.map(async drone => {
+                    const [missions, numberCount] = await findCountMissionByDrone(drone);
+                    return {missionsCount: numberCount, droneName: drone.droneName};
+                })
+                const missions = await Promise.all(missionPromise);
+                const bestDrone = missions.sort((firstItem, secondItem) => secondItem.missionsCount - firstItem.missionsCount)
+                console.log(missions);
+                res.status(200).json(missions[0]);
+            }
+            
         }
         else{
             return res.status(400).json({

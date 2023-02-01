@@ -1,7 +1,7 @@
 import { bindActionCreators } from "@reduxjs/toolkit";
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
-import { Button, Card, Text } from "react-native-paper";
+import { Button, Card, FAB, Text } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { connect } from "react-redux";
 import { HeaderComponent } from "../../components/header/header.component";
@@ -54,26 +54,31 @@ const HomeScreen = (props: homeScreenProps) => {
             console.log(props.loginState.userToken);
             props.showLoading();
             DroneService.getMostUsedDrone(props.loginState.userToken).then(drone => {
-                console.log(drone);
-                if(drone !== null){
+                console.log(drone.droneName);
+                if(drone.droneName !== null){
                     setIsDrone(true);
                     setMostUsedDrone(drone);
                 }
-                else
+                else{
                     setIsDrone(false);
-                props.showDronesSuccess();
-                props.hideLoading();
+                    props.showDronesSuccess();
+                }
+                    
+
+                MissionService.getMission(props.loginState.userToken).then(isMission => {
+                    setIsMission(isMission);
+                    props.showDronesSuccess();
+                    props.hideLoading();
+                }).catch(error => {
+                    props.showDronesFail(error);
+                    props.hideLoading();
+                });
             }).catch(error => {
                 props.showDronesFail(error);
                 props.hideLoading();
             });
 
-            MissionService.getMission(props.loginState.userToken).then(isMission => {
-                setIsMission(isMission);
-            }).catch(error => {
-                props.showDronesFail(error);
-                props.hideLoading();
-            });
+            
         }
         else{
             props.hideLoading();
@@ -81,12 +86,12 @@ const HomeScreen = (props: homeScreenProps) => {
     }, [props.droneState.droneLoading]);
 
     return(
-        <SafeAreaView>
+        <SafeAreaView style={{flex: 1}}>
             <HeaderComponent title="Drone Managment" hasBackButton={false} navigation={props.navigation}/>
             <View style={homeStyle.content}>
                 <Card>
                     <Card.Title title="Drones"/>
-                    { props.droneState.droneGetSuccess ? 
+                    { props.droneState.droneGetSuccess && isDrone ? 
                         <Card.Content>
                         <Text>Most used drone: {mostUsedDrone?.droneName}</Text>
                         <Text>Completed missions: {mostUsedDrone?.missionCount}</Text>
@@ -129,6 +134,12 @@ const HomeScreen = (props: homeScreenProps) => {
                     </Card.Content>
                 </Card>
             </View>
+            <FAB
+                onPress={() => {}}
+                icon="help"
+                style={homeStyle.fab}
+                color={"white"}
+            /> 
         </SafeAreaView>
     )
 }
