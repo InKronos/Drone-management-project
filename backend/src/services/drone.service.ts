@@ -1,3 +1,4 @@
+import { disconnect } from "process";
 import { Drone } from "../entities/drone.entity";
 import { AppDataSource } from "../utils/dataSource";
 
@@ -39,14 +40,6 @@ export const updateDroneWithVerificationCode = async (drone: Drone, verification
 export const deleteVerificationCode = async (drone: Drone) => {
     drone.verificationCode = null;
     return await AppDataSource.manager.save(drone);
-}
-
-export const findOnlineDrones = async () => {
-    return await droneRepository.find({
-        where: {
-            isOnline: true
-        }
-    });
 }
 
 

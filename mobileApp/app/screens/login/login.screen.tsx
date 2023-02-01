@@ -1,3 +1,4 @@
+import { useIsFocused } from "@react-navigation/native";
 import { bindActionCreators } from "@reduxjs/toolkit";
 import { Formik } from "formik";
 import React, { useEffect, useState } from "react";
@@ -30,6 +31,14 @@ const LoginScreen = (props: LoginScreenProps) => {
 
     const [userLogin, setUserLogin] = useState({email: "", password: ""});
     const [token, setToken] = useState();
+    const [snackbar, setSnackbar] = useState(false);
+
+    const isFocused = useIsFocused();
+    useEffect(() => {
+        console.log("??");
+        isFocused && setUserLogin({email: "", password: ""})
+    }, [isFocused]);
+
     useEffect(() => {
         if (props.loginState.isLoggingIn){
             props.showLoading();
@@ -45,6 +54,7 @@ const LoginScreen = (props: LoginScreenProps) => {
                 
             })
             .catch(error => {
+                setSnackbar(true);
                 props.loginFail(error.response.data.message);
             })
         }
@@ -67,8 +77,11 @@ const LoginScreen = (props: LoginScreenProps) => {
                     <Card.Title title="Drone Managment" titleStyle={loginStyle.cardTitle}> </Card.Title>
                     <Card.Content>
                         <Formik
-                        initialValues={{email: "", password: ""}}
-                        onSubmit={login}
+                        initialValues={userLogin}
+                        onSubmit={(values, {resetForm}) => {
+                            login(values);
+                            
+                        }}
                         validationSchema={loginForm}>
                             {({handleSubmit, handleChange, errors, setFieldTouched, touched}) => (
                                 <>
@@ -115,16 +128,15 @@ const LoginScreen = (props: LoginScreenProps) => {
                     </Card.Content>
                 </Card>
             </View>
-            {
-                props.loginState.error ?
+
+
                 <Snackbar
                     duration={5000}
-                    visible={true}
-                    onDismiss={() => {}}>
+                    visible={snackbar}
+                    onDismiss={() => {setSnackbar(false)}}>
                     {props.loginState.error}
                 </Snackbar>
-                : null
-            }
+
             <FAB
                 onPress={() => {}}
                 icon="help"

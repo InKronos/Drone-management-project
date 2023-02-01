@@ -62,23 +62,30 @@ const HomeScreen = (props: homeScreenProps) => {
                 }
                 else{
                     setIsDrone(false);
-                    props.showDronesSuccess();
+                    props.hideLoading();
                 }
-                    
-
-                MissionService.getMission(props.loginState.userToken).then(isMission => {
-                    setIsMission(isMission);
-                    props.showDronesSuccess();
-                    props.hideLoading();
-                }).catch(error => {
-                    props.showDronesFail(error);
-                    props.hideLoading();
-                });
+                console.log("dupadapdpa[sd");
+                props.showLoading();
+                
+                props.hideLoading();
+                props.showDronesSuccess();
             }).catch(error => {
                 props.showDronesFail(error);
                 props.hideLoading();
             });
-
+            console.log("dupadapdpa[sd2");
+            MissionService.getMission(props.loginState.userToken).then(resmission => {
+                console.log(resmission);
+                console.log("dupadapdpa[s3d");
+                
+                setIsMission(resmission);
+                props.showDronesSuccess();
+                props.hideLoading();
+            }).catch(error => {
+                props.showDronesFail(error);
+                props.hideLoading();
+            });
+            props.hideLoading();
             
         }
         else{
@@ -104,7 +111,7 @@ const HomeScreen = (props: homeScreenProps) => {
                         </Button>
                     </Card.Content>
                     : null }
-                    { !props.droneState.droneLoading && !isDrone ? 
+                    { !isDrone ? 
                         <Card.Content>
                             <Text style={homeStyle.textContainer}>no connected drones</Text>
                             <Button 

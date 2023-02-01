@@ -3,7 +3,7 @@ import { Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { Button, Text, TextInput } from "react-native-paper";
+import { Button, Snackbar, Text, TextInput } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { connect } from "react-redux";
 import { HeaderComponent } from "../../components/header/header.component";
@@ -35,7 +35,7 @@ const RegisterScreen = (props: RegisterScreenProps) => {
     const [userRegister, setUserRegister] = useState({name: "", email: "", password: "", phone_number: ""});
     const [secureTextEntryPassword, setSecureTextEntryPassword] = useState(true);
     const [secureTextEntryPasswordConfirm, setSecureTextEntryPasswordConfirm] = useState(true);
-
+    const [snackbar, setSnackbar] = useState(false);
     const [eyePassword, setEyePassword] = useState("eye-off-outline");
     const [eyePasswordConfirm, setEyePasswordConfirm] = useState("eye-off-outline");
 
@@ -50,6 +50,7 @@ const RegisterScreen = (props: RegisterScreenProps) => {
                 props.hideLoading();
             })
             .catch(error => {
+                setSnackbar(true);
                 props.registerFail(error.response.data.message);
             })
         }
@@ -64,7 +65,7 @@ const RegisterScreen = (props: RegisterScreenProps) => {
     }
 
     return (
-        <SafeAreaView>
+        <SafeAreaView style={{flex: 1}}>
             <ScrollView>
                 <HeaderComponent title="Register" hasBackButton={true} navigation={props.navigation}/>
                 <View style={registerStyle.content}>
@@ -159,7 +160,14 @@ const RegisterScreen = (props: RegisterScreenProps) => {
                        
                     </Formik>
                 </View>
+                
             </ScrollView>
+            <Snackbar
+                    duration={5000}
+                    visible={snackbar}
+                    onDismiss={() => setSnackbar(false)}>
+                    {props.registerState.error}
+            </Snackbar> 
         </SafeAreaView>
     )
 }

@@ -9,7 +9,7 @@ export const HeaderComponent = (props: HeaderComponentParams) => {
 
     const goBack = () => props.navigation?.goBack();
     const logout = () => {
-        props.navigation?.goBack();
+        props.navigation?.navigate("Login");
         closeMenu();
     }
     const openMenu = () => setVisible(true);

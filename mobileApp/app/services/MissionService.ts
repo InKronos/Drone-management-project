@@ -10,7 +10,10 @@ class MissionService {
         return new Promise<boolean>((resolve, reject) => {
             axios.post(`${URL}/api/pilot/ismission`,{
                     token: userToken
-                }).then(res => resolve(res.data))
+                }).then(res => {
+                    resolve(res.data);
+                    console.log("dupa");
+                })
                 .catch(err => {
                     reject(err.message);
                 })
