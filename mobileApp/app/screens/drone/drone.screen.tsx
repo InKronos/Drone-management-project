@@ -1,7 +1,7 @@
 import { bindActionCreators } from "@reduxjs/toolkit";
 import React, { useEffect, useState } from "react";
 import { RefreshControl, ScrollView, View } from "react-native";
-import { Avatar, Button, Card, IconButton, List, Snackbar, Text } from "react-native-paper";
+import { Avatar, Button, Card, Dialog, IconButton, List, Portal, Snackbar, Text } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { connect } from "react-redux";
 import { Drone } from "../../model/drone/Drone";
@@ -47,7 +47,11 @@ const DroneScreen = (props: droneScreenProps) => {
     const onRefresh = () => props.getingDrones();
 
     const goToCreateMissionScreen = (id: number, long: number, lat: number) => props.navigation.navigate("CreateMission", { id: id, long, lat});
+    const [visible, setVisible] = React.useState(false);
 
+    const showDialog = () => setVisible(true);
+
+    const hideDialog = () => setVisible(false);
 
     const disconnectDrone = () => {
         props.showLoading();
@@ -112,7 +116,7 @@ const DroneScreen = (props: droneScreenProps) => {
                         <Text>Missions complited: {drone?.numberOfFinishedMissions}</Text>
                         <Text>Numbers of batteries fully charged: 1/2{drone?.numberOfChargedBatteries}{drone?.numberOfBatteries}</Text>
                         <Button mode="outlined" style={droneStyle.button} onPress={() => goToCreateMissionScreen(drone.id, drone.longitude, drone.latitude)}>Change number of batteries</Button>
-                        <Button mode="contained" style={droneStyle.errorButton} onPress={disconnectDrone}>Disconnet</Button>
+                        <Button mode="contained" style={droneStyle.errorButton} onPress={showDialog}>Disconnet</Button>
 
                     </View>
                     {
@@ -130,7 +134,18 @@ const DroneScreen = (props: droneScreenProps) => {
                     {"Error"}
             </Snackbar>
             </ScrollView>
-            
+            <Portal>
+          <Dialog visible={visible} onDismiss={hideDialog}>
+            <Dialog.Title>Disconnecting drone</Dialog.Title>
+            <Dialog.Content>
+              <Text variant="bodyMedium">Do you want disconnect drone from you?</Text>
+            </Dialog.Content>
+            <Dialog.Actions>
+                <Button onPress={hideDialog}>No</Button>
+                <Button onPress={disconnectDrone}>Yes</Button>
+            </Dialog.Actions>
+          </Dialog>
+        </Portal>
         </SafeAreaView>
     )
 }

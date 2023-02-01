@@ -1,15 +1,14 @@
 import axios from "axios";
 import React from "react";
-import { Drone } from "../model/drone/Drone";
 import { Mission } from "../model/mission/Mission";
-import { MissionPath } from "../model/mission/MissionPath";
 import { MissionPathWhithoutId } from "../model/mission/MissionPathWithoutId";
+import {URL} from "react-native-dotenv";
 
 
 class MissionService {
     getMission(userToken: string){
         return new Promise<boolean>((resolve, reject) => {
-            axios.post('http://192.168.0.197:8000/api/pilot/ismission',{
+            axios.post(`${URL}/api/pilot/ismission`,{
                     token: userToken
                 }).then(res => resolve(res.data))
                 .catch(err => {
@@ -21,7 +20,7 @@ class MissionService {
 
     getUserMissions(userToken: string){
         return new Promise<Mission[]>((resolve, reject) => {
-            axios.post('http://192.168.0.197:8000/api/pilot/missions',{
+            axios.post(`${URL}/api/pilot/missions`,{
                     token: userToken
                 }).then(res => resolve(res.data))
                 .catch(err => {
@@ -33,7 +32,7 @@ class MissionService {
 
     createMission(id: number, longitude: number, latitude: number, longitudeDestination: number, latitudeDestioation: number){
         return new Promise<number>((resolve, reject) => {
-            axios.post('http://192.168.0.197:8000/api/mission/create',{
+            axios.post(`${URL}/api/mission/create`,{
                     droneId: id,
                     longitude: longitude,
                     latitude: latitude,
@@ -49,7 +48,7 @@ class MissionService {
 
     getMissionData(id: number, time?: number){
         return new Promise<Mission>((resolve, reject) => {
-            axios.post('http://192.168.0.197:8000/api/mission',{
+            axios.post(`${URL}/api/mission`,{
                     id: id
                 }).then(res => {
                     const mission = res.data;

@@ -2,11 +2,12 @@ import axios from "axios";
 import React from "react";
 import { BestDrone } from "../model/drone/BestDrone";
 import { Drone } from "../model/drone/Drone";
+import {URL} from "react-native-dotenv";
 
 class DroneService {
     getConnectedDrones(userToken: string){
         return new Promise<Drone[]>((resolve, reject) => {
-            axios.post('http://192.168.0.197:8000/api/drone/getconnected',{
+            axios.post(`${URL}/api/drone/getconnected`,{
                     token: userToken
                 }).then(res => {
                     console.log(res);
@@ -22,7 +23,7 @@ class DroneService {
 
     getMostUsedDrone(userToken: string){
         return new Promise<BestDrone>((resolve, reject) => {
-            axios.post('http://192.168.0.197:8000/api/pilot/bestdrone',{
+            axios.post(`${URL}/api/pilot/bestdrone`,{
                 token: userToken
             }).then(res => {
                 console.log(res);
@@ -42,7 +43,7 @@ class DroneService {
 
     getUserDrones(userToken: string){
         return new Promise<Drone[]>((resolve, reject) => {
-            axios.post('http://192.168.0.197:8000/api/pilot/drones',{
+            axios.post(`${URL}/api/pilot/drones`,{
                     token: userToken
                 }).then(res => {
                     console.log(res);
@@ -58,7 +59,7 @@ class DroneService {
 
     getDrone(id: number){
         return new Promise<Drone>((resolve, reject) => {
-            axios.post('http://192.168.0.197:8000/api/drone',{
+            axios.post(`${URL}/api/drone`,{
                     id: id
                 }).then(res => {
                     console.log(res);
@@ -74,7 +75,7 @@ class DroneService {
 
     disconnectDrone(id: number, userToken: string){
         return new Promise<boolean>((resolve, reject) => {
-            axios.post('http://192.168.0.197:8000/api/drone/disconnect',{
+            axios.post(`${URL}/api/drone/disconnect`,{
                     token: userToken,
                     droneId: id
                 }).then(res => {
@@ -91,7 +92,7 @@ class DroneService {
 
     canVerify(id: number){
         return new Promise<boolean>((resolve, reject) => {
-            axios.post('http://192.168.0.197:8000/api/drone/canverify',{
+            axios.post(`${URL}/api/drone/canverify`,{
                     id: id
                 }).then(res => {
                     resolve(res.data);
@@ -105,7 +106,7 @@ class DroneService {
 
     connectToDrone(userToken: string, id: number, verificationCode: number){
         return new Promise<boolean>((resolve, reject) => {
-            axios.post('http://192.168.0.197:8000/api/drone/connect',{
+            axios.post(`${URL}/api/drone/connect`,{
                     droneId: id,
                     token: userToken,
                     verificationCode: verificationCode

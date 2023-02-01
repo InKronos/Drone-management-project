@@ -6,5 +6,6 @@
 
     /* Completeness */
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
-  }
+  },
+  "typeRoots": ["./app/types"] // <------ you need to add this
 }

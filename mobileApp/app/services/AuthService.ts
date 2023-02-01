@@ -1,10 +1,11 @@
-import { PilotData } from "../model/pilot/PilotData";
-import axios, {AxiosPromise, AxiosResponse} from 'axios';
+import axios from 'axios';
+import {URL} from "react-native-dotenv";
 
 class AuthService{
     login(email: string, password: string) {
+        console.log(URL);
         try{
-            return axios.post('http://192.168.0.197:8000/api/login',{
+            return axios.post(`${URL}/api/login`,{
                 email: email,
                 password: password
             });
@@ -17,7 +18,7 @@ class AuthService{
 
     register(name: string, email: string, password: string, phone_number: string) {
         try{
-            return axios.post('http://192.168.0.197:8000/api/register',{
+            return axios.post(`${URL}/api/register`,{
                 name: name,
                 email: email,
                 password: password,
