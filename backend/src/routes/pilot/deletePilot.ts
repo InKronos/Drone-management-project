@@ -1,13 +1,11 @@
 import express from "express";
-import { addDroneToPilot, findPilotById, findPilotByIdWithDrones } from "../../services/pilot.service";
+import { deletePilot, findPilotById } from "../../services/pilot.service";
 import { verifyJwt } from "../../utils/jwt";
-import { createDrone, findDroneById } from "../../services/drone.service";
-import { disconnect } from "../../utils/disconnect";
 
 
 const router = express.Router();
 
-router.post('/api/pilot/drones', async (req, res, next) => {
+router.post('/api/delete', async (req, res, next) => {
     try{
         
         const { token } = req.body;
@@ -15,11 +13,9 @@ router.post('/api/pilot/drones', async (req, res, next) => {
         const sub = verifyJwt(token);
         if(sub !== undefined && sub !== null){
             let id = parseInt(sub);
-            const pliot = await findPilotByIdWithDrones({id});
-            disconnect(pliot[0].drones);
-            res.status(200).json(
-            pliot[0].drones
-            );
+            const pliot = await findPilotById({id: id});
+            if (pliot !== null) await deletePilot(pliot);
+            res.status(200).json(true);
         }
         else{
             return res.status(400).json({
@@ -35,4 +31,4 @@ router.post('/api/pilot/drones', async (req, res, next) => {
 });
 
 
-export {router as getPilotDrones}
+export {router as deletePilot}

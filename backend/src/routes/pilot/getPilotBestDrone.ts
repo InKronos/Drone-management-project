@@ -14,11 +14,9 @@ router.post('/api/pilot/bestdrone', async (req, res, next) => {
         const { token } = req.body;
         
         const sub = verifyJwt(token);
-        console.log(sub);
         if(sub !== undefined && sub !== null){
             let id = parseInt(sub);
             const pliot = await findPilotByIdWithDrones({id});
-            console.log(pliot[0].drones);
             if(pliot[0].drones.length === 0){
                 res.status(200).json(false);
             }
@@ -29,8 +27,7 @@ router.post('/api/pilot/bestdrone', async (req, res, next) => {
                 })
                 const missions = await Promise.all(missionPromise);
                 const bestDrone = missions.sort((firstItem, secondItem) => secondItem.missionsCount - firstItem.missionsCount)
-                console.log(missions);
-                res.status(200).json(missions[0]);
+                res.status(200).json(bestDrone[0]);
             }
             
         }

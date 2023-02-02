@@ -26,6 +26,12 @@ export class Drone extends BaseEntity {
 	@Column({nullable: true, type: 'text'})
 	verificationCode!: string | null;
 
+	@Column({nullable: true})
+	numberOfBatteires: number;
+
+	@Column({nullable: true})
+	numberOfChargedBatteries: number;
+
 	@Column({type: "decimal", precision: 10, scale: 6, nullable: true})
 	longitude: number;
 

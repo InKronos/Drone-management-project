@@ -11,7 +11,6 @@ router.post('/api/drone/canverify', async (req, res, next) => {
         const { id } = req.body;
      
         const drone = await findDroneById({id: id});
-        console.log(drone);
         if(drone === null){
             res.status(404).json({
                 status: 'fail',

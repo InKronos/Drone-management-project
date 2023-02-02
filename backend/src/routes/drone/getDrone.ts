@@ -20,17 +20,14 @@ router.post('/api/drone', async (req, res, next) => {
             isOnline: drone.isOnline,
             longitude: drone.longitude,
             latitude: drone.latitude,
-            numberOfFinishedMissions: numberCount
+            numberOfFinishedMissions: numberCount,
+            numberOfBatteires: drone.numberOfBatteires,
+            numberOfChargedBatteries: drone.numberOfChargedBatteries
+
           });
         }
     } 
     catch (err: any) {
-        if (err.code === '23505') {
-            return res.status(409).json({
-              status: 'fail',
-              message: 'Drone with that name already exist',
-            });
-          }
           next(err);
     }
 });

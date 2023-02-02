@@ -11,13 +11,10 @@ router.post('/api/drone/disconnect', async (req, res, next) => {
         const { droneId, token } = req.body;
         
         const sub = verifyJwt(token);
-        console.log(sub);
-        console.log("dd");
         if(sub !== undefined && sub !== null){
             let id = parseInt(sub);
             const [pliot] = await findPilotByIdWithDrones({id: id});
             const drone = await findDroneById({id: droneId});
-            console.log("dd");
             if(pliot !== null && drone !== null){
                 disconnectDrone(pliot, drone);
                 res.status(200).json(

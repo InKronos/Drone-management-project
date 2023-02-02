@@ -6,7 +6,6 @@ const router = express.Router();
 
 router.post('/api/register', async (req, res, next) => {
     try {
-        console.log(req.body);
         const { name, password, email, phone_number } = req.body;
     
         const pilot = await createPilot(

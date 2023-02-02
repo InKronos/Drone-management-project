@@ -22,6 +22,8 @@ import { getDrone } from './routes/drone/getDrone';
 import { ping } from './routes/drone/ping';
 import { canGetVerify } from './routes/drone/canGetVerify';
 import { disconnectFromPilot } from './routes/drone/disconnectFromPilot';
+import { editPilot } from './routes/pilot/editPilot';
+import { changeBatteries } from './routes/drone/changeBatteries';
 
 
 dotenv.config();
@@ -54,8 +56,8 @@ AppDataSource.initialize()
     app.use(ping);
     app.use(canGetVerify);
     app.use(disconnectFromPilot);
-
-
+    app.use(editPilot);
+    app.use(changeBatteries);
     app.listen(port, () => {
       console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
     });

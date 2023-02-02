@@ -18,7 +18,6 @@ router.post('/api/drone/ping', async (req, res, next) => {
     try{     
         const droneInfo: droneInfo = req.body;
         const drone = await findDroneByName({droneName: droneInfo.droneName})
-        //console.log(drone);
         if(drone === null){
             res.status(404).json({
                 status: 'fail',

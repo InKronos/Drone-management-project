@@ -11,7 +11,6 @@ router.get('/api/me', async (req, res, next) => {
         const { token } = req.body;
         
         const sub = verifyJwt(token);
-        console.log(sub);
         if(sub !== undefined && sub !== null){
             let id = parseInt(sub);
             const pliot = await findPilotById({id});

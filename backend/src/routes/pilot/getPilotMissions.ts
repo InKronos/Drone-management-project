@@ -14,11 +14,9 @@ router.post('/api/pilot/missions', async (req, res, next) => {
         const { token } = req.body;
         
         const sub = verifyJwt(token);
-        console.log(sub);
         if(sub !== undefined && sub !== null){
             let id = parseInt(sub);
             const pliot = await findPilotByIdWithDrones({id});
-            console.log(pliot[0].drones);
             const missionPromise = pliot[0].drones.map(async drone => {
                 const missionsOfDrone = await findMissionByDrone(drone);
                 console.log(missionsOfDrone);

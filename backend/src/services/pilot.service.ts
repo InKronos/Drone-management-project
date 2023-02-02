@@ -39,6 +39,20 @@ export const createPilot = async(
     ));
 };
 
+export const editPilot = async(
+    pilot: Pilot
+) => {
+
+    return await AppDataSource.manager.save(pilot);
+};
+
+export const deletePilot = async(
+    pilot: Pilot
+) => {
+
+    return await AppDataSource.manager.remove(pilot);
+};
+
 export const signTokens = async (pilot: Pilot) => {
 
     const access_token = signJwt({ sub: pilot.id });
