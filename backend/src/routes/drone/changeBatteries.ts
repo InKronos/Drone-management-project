@@ -5,7 +5,7 @@ import { findDroneById, updateDroneBatteries } from "../../services/drone.servic
 
 const router = express.Router();
 
-router.post('/api/drone', async (req, res, next) => {
+router.post('/api/drone/changebatteries', async (req, res, next) => {
     try{
         const { id, numberOfBatteires, numberOfChargedBatteries} = req.body;
        

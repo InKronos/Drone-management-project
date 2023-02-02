@@ -1,9 +1,13 @@
 import React, { useState } from "react";
-import { Appbar, Menu } from "react-native-paper";
+import { Appbar, Button, Dialog, Menu, Portal, Text } from "react-native-paper";
+import { connect } from "react-redux";
 import { theme } from "../../../App.style";
+import AuthService from "../../services/AuthService";
+import { AppState } from "../../store/AppState";
+import { LoginState } from "../../store/login/LoginState";
 import { headerStyle } from "./header.style";
 
-export const HeaderComponent = (props: HeaderComponentParams) => {
+const HeaderComponent = (props: HeaderComponentParams) => {
 
     const [visible, setVisible] = useState(false);
 
@@ -15,9 +19,24 @@ export const HeaderComponent = (props: HeaderComponentParams) => {
     const openMenu = () => setVisible(true);
     const closeMenu = () => setVisible(false);
 
-    
+    const [visibleDelete, setVisibleDelete] = React.useState(false);
+
+    const showDialog = () => setVisibleDelete(true);
+
+    const hideDialog = () => setVisibleDelete(false);
+
+    const deleteUser = () => {
+        AuthService.delete(props.loginState.userToken).then(res => {
+            if(res){
+                props.navigation.navigate("Login");
+            }
+        }).catch(error => {
+            console.log("error");
+        })
+    }
 
     return (
+        <>
         <Appbar.Header style={headerStyle.appBack}>
             {
                 props.hasBackButton ?
@@ -34,7 +53,7 @@ export const HeaderComponent = (props: HeaderComponentParams) => {
                     }>
                     <Menu.Item
                         title="Delete profile"
-                        onPress={()=>{}}/>
+                        onPress={showDialog}/>
                     <Menu.Item
                         title="Edit profile"
                         onPress={()=>{}}/>
@@ -47,6 +66,19 @@ export const HeaderComponent = (props: HeaderComponentParams) => {
             
             <Appbar.Content title={props.title} color={headerStyle.menu.color} />
         </Appbar.Header>
+          <Portal>
+          <Dialog visible={visibleDelete} onDismiss={hideDialog}>
+            <Dialog.Title>Deleting</Dialog.Title>
+            <Dialog.Content>
+              <Text variant="bodyMedium">Do you want delete user?</Text>
+            </Dialog.Content>
+            <Dialog.Actions>
+                <Button onPress={hideDialog}>No</Button>
+                <Button style={{backgroundColor: "red"}} onPress={deleteUser}>Yes</Button>
+            </Dialog.Actions>
+          </Dialog>
+        </Portal>
+        </>
     )
 }
 
@@ -54,4 +86,11 @@ interface HeaderComponentParams {
     title: string;
     hasBackButton: boolean;
     navigation?: any;
+    loginState: LoginState;
 }
+
+const mapStateToProps = (store: AppState)  => ({
+    loginState: store.login
+})
+
+export default connect(mapStateToProps)(HeaderComponent);

@@ -10,7 +10,6 @@ class AuthService{
                 password: password
             });
         } catch (error) {
-            console.log("errror itd cos tam", error)
             throw error;
         }
 
@@ -25,7 +24,30 @@ class AuthService{
                 phone_number
             });
         } catch (error) {
-            console.log("errror itd cos tam", error)
+            throw error;
+        }
+    }
+
+    edit(userToken: string, name: string, email: string, password: string, phone_number: string) {
+        try{
+            return axios.post(`${URL}/api/edit`,{
+                token: userToken,
+                name: name,
+                email: email,
+                password: password,
+                phone_number
+            });
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    delete(userToken: string) {
+        try{
+            return axios.post(`${URL}/api/delete`,{
+                token: userToken
+            });
+        } catch (error) {
             throw error;
         }
     }

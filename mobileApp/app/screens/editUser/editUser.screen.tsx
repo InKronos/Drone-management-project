@@ -11,16 +11,19 @@ import AuthService from "../../services/AuthService";
 import { AppState } from "../../store/AppState";
 import { hide, show } from "../../store/loading/loading.actions";
 import { LoadingState } from "../../store/loading/LoadingState";
+import { LoginState } from "../../store/login/LoginState";
 import { register, registerFail, registerSuccess } from "../../store/register/register.action";
 import { RegisterState } from "../../store/register/RegisterState";
-import { registerForm } from "./register.form";
-import { registerStyle } from "./register.style";
+import { editForm } from "./editUser.form";
+import { editUserStyle } from "./editUser.style";
 
-interface RegisterScreenProps {
+
+interface EditUserScreenProps {
     navigation: any;
 
     loadingState: LoadingState,
     registerState: RegisterState,
+    loginState: LoginState,
 
     hideLoading: Function;
     showLoading: Function;
@@ -30,7 +33,7 @@ interface RegisterScreenProps {
 }
 
 
-const RegisterScreen = (props: RegisterScreenProps) => {
+const EditUserScreen = (props: EditUserScreenProps) => {
 
     const [userRegister, setUserRegister] = useState({name: "", email: "", password: "", phone_number: ""});
     const [secureTextEntryPassword, setSecureTextEntryPassword] = useState(true);
@@ -43,10 +46,9 @@ const RegisterScreen = (props: RegisterScreenProps) => {
         if (props.registerState.isRegistering){
             props.showLoading();
 
-            AuthService.register(userRegister.name, userRegister.email, userRegister.password, userRegister.phone_number).then(res => {
-                console.log(res);
+            AuthService.edit(props.loginState.userToken, userRegister.name, userRegister.email, userRegister.password, userRegister.phone_number).then(res => {
                 props.registerSuccess("yes");
-                props.navigation.navigate("Login");
+                props.navigation.navigate("Home");
                 props.hideLoading();
             })
             .catch(error => {
@@ -67,12 +69,12 @@ const RegisterScreen = (props: RegisterScreenProps) => {
     return (
         <SafeAreaView style={{flex: 1}}>
             <ScrollView>
-                <HeaderComponent title="Register" hasBackButton={true} navigation={props.navigation}/>
-                <View style={registerStyle.content}>
+                <HeaderComponent title="Edit User" hasBackButton={true} navigation={props.navigation}/>
+                <View style={editUserStyle.content}>
                     <Formik
                      initialValues={{name: "", email: "", password: "", confirm_password: "", phone_number: ""}}
                      onSubmit={register}
-                     validationSchema={registerForm}>
+                     validationSchema={editForm}>
                         {({handleSubmit, handleChange, errors, setFieldTouched, touched}) => (
                             <>
                             <TextInput 
@@ -151,7 +153,7 @@ const RegisterScreen = (props: RegisterScreenProps) => {
                             }
                             <Button 
                                 mode="contained" 
-                                style={registerStyle.button}
+                                style={editUserStyle.button}
                                 onPress={handleSubmit}>
                                 Register
                             </Button>
@@ -174,7 +176,8 @@ const RegisterScreen = (props: RegisterScreenProps) => {
 
 const mapStateToProps = (store: AppState) => ({
     loadingState: store.loading,
-    registerState: store.register
+    registerState: store.register,
+    loginState: store.login,
 })
 
 const mapDispatchToProps = (dispatch: any) => (
@@ -187,4 +190,4 @@ const mapDispatchToProps = (dispatch: any) => (
     }, dispatch)
 )
 
-export default connect(mapStateToProps, mapDispatchToProps)(RegisterScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(EditUserScreen);

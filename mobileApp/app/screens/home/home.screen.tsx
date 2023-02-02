@@ -2,12 +2,13 @@ import { useIsFocused } from "@react-navigation/native";
 import { bindActionCreators } from "@reduxjs/toolkit";
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
-import { Button, Card, FAB, Text } from "react-native-paper";
+import { Button, Card, Dialog, FAB, Portal, Text } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { connect } from "react-redux";
-import { HeaderComponent } from "../../components/header/header.component";
+import HeaderComponent from "../../components/header/header.component";
 import { BestDrone } from "../../model/drone/BestDrone";
 import { Drone } from "../../model/drone/Drone";
+import AuthService from "../../services/AuthService";
 import DroneService from "../../services/DroneService";
 import MissionService from "../../services/MissionService";
 import { AppState } from "../../store/AppState";
@@ -47,6 +48,8 @@ const HomeScreen = (props: homeScreenProps) => {
     const [isMisson, setIsMission] = useState<boolean>(false);
     const [isDrone, setIsDrone] = useState<boolean>(false);
     const isFocused = useIsFocused();
+
+ 
     useEffect(() => {isFocused && props.getingDrones()}, [isFocused]);
 
     useEffect(() => {
@@ -148,6 +151,7 @@ const HomeScreen = (props: homeScreenProps) => {
                 style={homeStyle.fab}
                 color={"white"}
             /> 
+           
         </SafeAreaView>
     )
 }

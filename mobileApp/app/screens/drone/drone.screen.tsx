@@ -1,11 +1,11 @@
 import { bindActionCreators } from "@reduxjs/toolkit";
 import React, { useEffect, useState } from "react";
 import { RefreshControl, ScrollView, View } from "react-native";
-import { Avatar, Button, Card, Dialog, IconButton, List, Portal, Snackbar, Text } from "react-native-paper";
+import { Avatar, Button, Card, Dialog, IconButton, List, Portal, Snackbar, Text, TextInput } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { connect } from "react-redux";
 import { Drone } from "../../model/drone/Drone";
-import { HeaderComponent } from "../../components/header/header.component";
+import HeaderComponent from "../../components/header/header.component";
 import DroneService from "../../services/DroneService";
 import { AppState } from "../../store/AppState";
 import { getingDrones, showDronesFail, showDronesSuccess } from "../../store/drone/drone.actions";
@@ -14,8 +14,9 @@ import { hide, show } from "../../store/loading/loading.actions";
 import { LoadingState } from "../../store/loading/LoadingState";
 import { droneStyle } from "./drone.style";
 import { LoginState } from "../../store/login/LoginState";
-import loadingComponent from "../../components/loading/loading.component";
 import { useIsFocused } from "@react-navigation/native";
+import { batteriesForm } from "./drone.form";
+import { Formik } from "formik";
 
 interface droneScreenProps {
     navigation: any;
@@ -58,8 +59,25 @@ const DroneScreen = (props: droneScreenProps) => {
         DroneService.disconnectDrone(props.route.params.id, props.loginState.userToken).then(() => {
             props.navigation.navigate("showDrones");
             props.hideLoading();
-            setSnacBar(true);
         }).catch(error => {
+            setSnacBar(true);
+            props.hideLoading();
+        })
+    }
+    const [visibleBatteries, setVisibleBatteries] = React.useState(false);
+
+    const showDialogBatt = () => setVisibleBatteries(true);
+
+    const hideDialogBatt = () => setVisibleBatteries(false);
+
+    const changeBatteries = (batteriesForm: {chargedBatteriesNumber: string, batteries: string}) => {
+        props.showLoading();
+        DroneService.changeBatteries(props.route.params.id, parseInt(batteriesForm.chargedBatteriesNumber), parseInt(batteriesForm.batteries)).then(() => {
+            props.hideLoading();
+            props.getingDrones();
+        }).catch(error => {
+            setSnacBar(true);
+
             props.hideLoading();
         })
     }
@@ -67,6 +85,8 @@ const DroneScreen = (props: droneScreenProps) => {
     useEffect(() => {
         isFocused && props.getingDrones();
     }, [isFocused]);
+
+
 
     useEffect(() => {
         props.showLoading()
@@ -114,8 +134,8 @@ const DroneScreen = (props: droneScreenProps) => {
                     <View style={droneStyle.textContainer}>
                         <Text style={droneStyle.nameOfDrone}>{drone?.droneName}</Text>
                         <Text>Missions complited: {drone?.numberOfFinishedMissions}</Text>
-                        <Text>Numbers of batteries fully charged: 1/2{drone?.numberOfChargedBatteries}{drone?.numberOfBatteries}</Text>
-                        <Button mode="outlined" style={droneStyle.button} onPress={() => goToCreateMissionScreen(drone.id, drone.longitude, drone.latitude)}>Change number of batteries</Button>
+                        <Text>Numbers of batteries fully charged: {drone?.numberOfChargedBatteries}/{drone?.numberOfBatteries}</Text>
+                        <Button mode="outlined" style={droneStyle.button} onPress={showDialogBatt}>Change number of batteries</Button>
                         <Button mode="contained" style={droneStyle.errorButton} onPress={showDialog}>Disconnet</Button>
 
                     </View>
@@ -146,6 +166,57 @@ const DroneScreen = (props: droneScreenProps) => {
             </Dialog.Actions>
           </Dialog>
         </Portal>
+
+        <Portal>
+                <Dialog visible={visibleBatteries} onDismiss={hideDialogBatt}>
+                    <Dialog.Title>Verify</Dialog.Title>
+                    <Formik
+                        onSubmit={changeBatteries}
+                     initialValues={{chargedBatteriesNumber: "", batteries: ""}}
+                     validationSchema={batteriesForm}>
+                        {({handleSubmit, handleChange, errors, setFieldTouched, touched}) => (
+                            <>
+                    <Dialog.Content>
+                        <Text variant="bodyMedium">Type Number of baterries</Text>
+                        <TextInput
+                        keyboardType='numeric'
+                        label="Number of charged batteries"
+                        onChangeText={handleChange('chargedBatteries')}
+                        onFocus={() => setFieldTouched('chargedBatteries')}
+                        maxLength={6}
+                        />                      
+                        {
+                            touched.chargedBatteriesNumber && errors.chargedBatteriesNumber ?
+                            <Text style={{color: 'red'}}>
+                                {errors.chargedBatteriesNumber}
+                            </Text>
+                            : null
+                        }
+                         <TextInput
+                        keyboardType='numeric'
+                        label="Number of batteries"
+                        onChangeText={handleChange('batteries')}
+                        onFocus={() => setFieldTouched('batteries')}
+                        maxLength={6}
+                        />                      
+                        {
+                            touched.batteries && errors.batteries ?
+                            <Text style={{color: 'red'}}>
+                                {errors.batteries}
+                            </Text>
+                            : null
+                        }
+                            
+                    </Dialog.Content>
+                    <Dialog.Actions>
+                        <Button onPress={handleSubmit}>Add</Button>
+                    </Dialog.Actions>
+                    </>
+                        )}
+                        
+                    </Formik>
+                </Dialog>
+            </Portal>
         </SafeAreaView>
     )
 }

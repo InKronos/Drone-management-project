@@ -5,7 +5,7 @@ import { Button, Card, FAB, List, Snackbar, Text } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { connect } from "react-redux";
 import { Drone } from "../../model/drone/Drone";
-import { HeaderComponent } from "../../components/header/header.component";
+import HeaderComponent from "../../components/header/header.component";
 import DroneService from "../../services/DroneService";
 import { AppState } from "../../store/AppState";
 import { getingDrones, showDronesFail, showDronesSuccess } from "../../store/drone/drone.actions";

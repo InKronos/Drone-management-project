@@ -4,7 +4,7 @@ import { Image, RefreshControl, ScrollView, View } from "react-native";
 import { Button, Card, FAB, List, Snackbar, Text } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { connect } from "react-redux";
-import { HeaderComponent } from "../../components/header/header.component";
+import HeaderComponent from "../../components/header/header.component";
 import { AppState } from "../../store/AppState";
 import { hide, show } from "../../store/loading/loading.actions";
 import { LoadingState } from "../../store/loading/LoadingState";

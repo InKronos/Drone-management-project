@@ -89,6 +89,23 @@ class DroneService {
         })
     }
 
+    changeBatteries(id: number, batteries: number, chargetbatteries: number){
+        return new Promise<boolean>((resolve, reject) => {
+            axios.post(`${URL}/api/drone/changebatteries`,{
+                    droneId: id,
+                    numberOfChargedBatteries: chargetbatteries,
+                    numberOfFinishedMissions: batteries
+                }).then(res => {
+                    console.log(res);
+                    resolve(true);
+                })
+                .catch(err => {
+                    console.log(err.message);
+                    reject(err.message);
+                })
+        })
+    }
+
 
     canVerify(id: number){
         return new Promise<boolean>((resolve, reject) => {
